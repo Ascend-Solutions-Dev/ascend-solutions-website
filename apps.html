@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Apps | Ascend Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:    #1C3557;
+      --navy-lt: #2A4A72;
+      --cream:   #F7F3EE;
+      --sienna:  #E8734A;
+      --sage:    #4A9B7F;
+      --white:   #FDF9F5;
+      --gray:    #6B7280;
+      --gray-lt: #E8E4DF;
+      --text:    #1A1A2E;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 18px 48px; background: rgba(247,243,238,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(28,53,87,0.08); transition: box-shadow 0.3s; }
+    nav.scrolled { box-shadow: 0 2px 24px rgba(28,53,87,0.10); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark { width: 36px; height: 36px; background: var(--navy); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    .logo-mark svg { width: 20px; height: 20px; }
+    .logo-text { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; }
+    .logo-text span { color: var(--sienna); }
+    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+    .nav-links a { font-size: 14px; font-weight: 500; color: var(--navy); text-decoration: none; opacity: 0.75; transition: opacity 0.2s; }
+    .nav-links a:hover, .nav-links a.active { opacity: 1; }
+    .nav-cta { background: var(--sienna); color: white !important; opacity: 1 !important; padding: 10px 22px; border-radius: 100px; font-size: 14px !important; font-weight: 600 !important; transition: background 0.2s, transform 0.15s !important; }
+    .nav-cta:hover { background: #d4623a !important; transform: translateY(-1px); }
+
+    /* PAGE HERO */
+    .page-hero { padding: 160px 48px 80px; text-align: center; position: relative; overflow: hidden; }
+    .hero-arc { position: absolute; bottom: -20%; left: 50%; transform: translateX(-50%); width: 140%; height: 70%; background: radial-gradient(ellipse at 50% 100%, rgba(232,115,74,0.10) 0%, rgba(74,155,127,0.07) 40%, transparent 70%); border-radius: 50% 50% 0 0 / 60% 60% 0 0; pointer-events: none; }
+    .page-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--sienna); background: rgba(232,115,74,0.1); padding: 6px 14px; border-radius: 100px; margin-bottom: 24px; }
+    .page-eyebrow::before { content: ''; width: 6px; height: 6px; background: var(--sienna); border-radius: 50%; }
+    .page-headline { font-family: 'Playfair Display', serif; font-size: clamp(36px, 5vw, 60px); font-weight: 700; color: var(--navy); letter-spacing: -1px; line-height: 1.1; margin-bottom: 20px; }
+    .page-headline em { font-style: italic; color: var(--sienna); }
+    .page-sub { font-size: 17px; color: var(--gray); line-height: 1.7; max-width: 560px; margin: 0 auto; }
+
+    /* FEATURED PANTRII */
+    .featured-section { padding: 80px 48px 0; max-width: 1200px; margin: 0 auto; }
+    .section-label { font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--sienna); margin-bottom: 24px; display: block; }
+
+    .featured-card { background: var(--navy); border-radius: 32px; padding: 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; overflow: hidden; margin-bottom: 24px; }
+    .featured-card::before { content: ''; position: absolute; top: -30%; right: -10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(232,115,74,0.15), transparent 70%); border-radius: 50%; }
+    .featured-card::after { content: ''; position: absolute; bottom: -20%; left: 20%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(74,155,127,0.12), transparent 70%); border-radius: 50%; }
+
+    .featured-content { position: relative; z-index: 1; }
+    .pantrii-wordmark { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--sienna); margin-bottom: 8px; }
+    .featured-tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; background: rgba(232,115,74,0.2); color: var(--sienna); margin-bottom: 20px; }
+    .featured-name { font-family: 'Playfair Display', serif; font-size: clamp(28px, 3.5vw, 48px); font-weight: 700; color: white; line-height: 1.05; margin-bottom: 12px; letter-spacing: -0.5px; }
+    .featured-tagline { font-size: 14px; font-weight: 500; color: rgba(232,115,74,0.9); letter-spacing: 1px; margin-bottom: 20px; }
+    .featured-desc { font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 32px; }
+
+    .featured-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 36px; }
+    .featured-features li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.75); }
+    .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sienna); flex-shrink: 0; }
+
+    .btn-sienna { background: var(--sienna); color: white; padding: 13px 28px; border-radius: 100px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s, transform 0.15s; }
+    .btn-sienna:hover { background: #d4623a; transform: translateY(-2px); }
+
+    /* Pantrii phone mockup */
+    .featured-visual { position: relative; z-index: 1; display: flex; justify-content: center; }
+    .pantrii-phone { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 28px; padding: 24px; width: 100%; max-width: 300px; }
+    .ph-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .ph-app-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: white; }
+    .ph-status { font-size: 10px; font-weight: 600; color: var(--sienna); background: rgba(232,115,74,0.15); padding: 3px 10px; border-radius: 100px; }
+    .ph-alert { background: rgba(232,115,74,0.15); border: 1px solid rgba(232,115,74,0.25); border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+    .ph-alert-icon { font-size: 16px; }
+    .ph-alert-text { font-size: 11px; color: rgba(255,255,255,0.8); line-height: 1.4; }
+    .ph-alert-text strong { color: var(--sienna); }
+    .ph-section-title { font-size: 9px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 10px; }
+    .ph-items { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+    .ph-item { background: rgba(255,255,255,0.07); border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; }
+    .ph-item-left { display: flex; align-items: center; gap: 8px; }
+    .ph-item-emoji { font-size: 16px; }
+    .ph-item-name { font-size: 12px; color: white; font-weight: 500; }
+    .ph-item-qty { font-size: 10px; color: rgba(255,255,255,0.4); }
+    .ph-item-exp { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 100px; }
+    .exp-warn { background: rgba(232,115,74,0.2); color: var(--sienna); }
+    .exp-ok   { background: rgba(74,155,127,0.2); color: var(--sage); }
+    .ph-meal { background: rgba(255,255,255,0.07); border-radius: 12px; padding: 12px 14px; }
+    .ph-meal-label { font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .ph-meal-name { font-size: 13px; font-weight: 600; color: white; margin-bottom: 4px; }
+    .ph-meal-meta { font-size: 10px; color: rgba(255,255,255,0.4); }
+
+    /* MORE APPS */
+    .apps-grid-section { padding: 80px 48px; max-width: 1200px; margin: 0 auto; }
+    .apps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .app-card { background: var(--white); border: 1px solid rgba(28,53,87,0.07); border-radius: 24px; padding: 36px 32px; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+    .app-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(28,53,87,0.1); }
+    .app-card-top { width: 56px; height: 56px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 20px; }
+    .act-1 { background: rgba(232,115,74,0.12); }
+    .act-2 { background: rgba(74,155,127,0.12); }
+    .act-3 { background: rgba(139,107,174,0.12); }
+    .act-4 { background: rgba(212,168,67,0.12); }
+    .act-5 { background: rgba(28,53,87,0.08); }
+    .app-card-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+    .app-card-desc { font-size: 13px; color: var(--gray); line-height: 1.7; flex: 1; margin-bottom: 24px; }
+    .app-card-footer { display: flex; align-items: center; justify-content: space-between; }
+    .app-status-badge { font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 4px 12px; border-radius: 100px; }
+    .status-soon { background: rgba(232,115,74,0.1); color: var(--sienna); }
+    .status-dev  { background: rgba(74,155,127,0.1); color: var(--sage); }
+    .status-plan { background: rgba(28,53,87,0.07); color: var(--navy); }
+    .app-arrow { width: 32px; height: 32px; border-radius: 50%; background: var(--cream); border: 1px solid var(--gray-lt); display: flex; align-items: center; justify-content: center; transition: background 0.2s, border-color 0.2s; }
+    .app-card:hover .app-arrow { background: var(--navy); border-color: var(--navy); }
+    .app-card:hover .app-arrow svg path { stroke: white; }
+
+    /* WAITLIST */
+    .waitlist-section { margin: 0 48px 80px; background: linear-gradient(135deg, var(--sage) 0%, #3d8a6e 100%); border-radius: 32px; padding: 64px; display: flex; align-items: center; justify-content: space-between; gap: 40px; position: relative; overflow: hidden; }
+    .waitlist-section::before { content: ''; position: absolute; top: -30%; right: -5%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,0.12), transparent 70%); border-radius: 50%; }
+    .waitlist-content { position: relative; z-index: 1; }
+    .waitlist-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-bottom: 12px; }
+    .waitlist-headline { font-family: 'Playfair Display', serif; font-size: clamp(22px, 2.5vw, 32px); font-weight: 700; color: white; line-height: 1.2; letter-spacing: -0.3px; }
+    .waitlist-form { display: flex; gap: 12px; flex-shrink: 0; position: relative; z-index: 1; flex-wrap: wrap; }
+    .waitlist-input { padding: 13px 20px; border-radius: 100px; border: 1.5px solid rgba(255,255,255,0.25); font-size: 14px; font-family: 'Inter', sans-serif; background: rgba(255,255,255,0.15); color: white; outline: none; min-width: 240px; backdrop-filter: blur(8px); transition: border-color 0.2s; }
+    .waitlist-input::placeholder { color: rgba(255,255,255,0.5); }
+    .waitlist-input:focus { border-color: rgba(255,255,255,0.6); }
+    .btn-white { background: white; color: var(--sage); padding: 13px 28px; border-radius: 100px; font-size: 14px; font-weight: 600; border: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: transform 0.15s, opacity 0.2s; white-space: nowrap; }
+    .btn-white:hover { transform: translateY(-2px); opacity: 0.92; }
+
+    /* FOOTER */
+    footer { background: #12243A; padding: 60px 48px 40px; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer-brand .logo-text { color: white; }
+    .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.6; margin-top: 12px; max-width: 240px; }
+    .footer-col-title { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 16px; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a { font-size: 13px; color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: white; }
+    .footer-bottom { max-width: 1200px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); }
+    .footer-legal { display: flex; gap: 24px; }
+    .footer-legal a { font-size: 12px; color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.2s; }
+    .footer-legal a:hover { color: rgba(255,255,255,0.6); }
+
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .page-hero { padding: 120px 24px 60px; }
+      .featured-section { padding: 60px 24px 0; }
+      .featured-card { grid-template-columns: 1fr; padding: 40px 28px; }
+      .featured-visual { display: none; }
+      .apps-grid-section { padding: 60px 24px; }
+      .apps-grid { grid-template-columns: 1fr; }
+      .waitlist-section { margin: 0 24px 60px; padding: 40px 28px; flex-direction: column; }
+      footer { padding: 48px 24px 32px; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; } }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 20 20" fill="none"><path d="M10 2L17 16H3L10 2Z" fill="none" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 7L13.5 14H6.5L10 7Z" fill="white" opacity="0.4"/></svg>
+    </div>
+    <span class="logo-text">Ascend <span>Solutions</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="apps.html" class="active">Our Apps</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#values">Why Ascend</a></li>
+    <li><a href="mailto:skyler@ascendsolutions.dev" class="nav-cta">Get in Touch</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="hero-arc"></div>
+  <div class="page-eyebrow">Our Apps</div>
+  <h1 class="page-headline">Tools built for real <em>family life</em></h1>
+  <p class="page-sub">We are building family tools around real routines: meals, schedules, memories, money, learning, and the small details that keep a home moving.</p>
+</section>
+
+<!-- PANTRII FEATURED -->
+<div class="featured-section">
+  <span class="section-label">Featured App</span>
+  <div class="featured-card">
+    <div class="featured-content">
+      <div class="pantrii-wordmark">Pantrii</div>
+      <span class="featured-tag">Coming Soon</span>
+      <h2 class="featured-name">A calmer way<br/>to manage food</h2>
+      <div class="featured-tagline">Track it. Plan it. Eat it.</div>
+      <p class="featured-desc">Pantrii helps you remember what food you have, use it before it expires, plan meals your family will actually eat, and keep the grocery list up to date.</p>
+      <ul class="featured-features">
+        <li><span class="feat-dot"></span>Smart pantry tracking with expiration alerts</li>
+        <li><span class="feat-dot"></span>Meal ideas based on what is already in your kitchen</li>
+        <li><span class="feat-dot"></span>Intelligent shopping lists that calculate what you actually need</li>
+        <li><span class="feat-dot"></span>Automated grocery ordering via Walmart+ and Amazon Fresh</li>
+        <li><span class="feat-dot"></span>Reduce food waste and save money every week</li>
+      </ul>
+      <a href="#waitlist" class="btn-sienna">
+        Join the Waitlist
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <div class="featured-visual">
+      <div class="pantrii-phone">
+        <div class="ph-header">
+          <div class="ph-app-name">Pantrii</div>
+          <div class="ph-status">Preview</div>
+        </div>
+
+        <div class="ph-alert">
+          <div class="ph-alert-icon">⚠️</div>
+          <div class="ph-alert-text"><strong>3 items expiring soon</strong><br/>Milk, Spinach, Greek Yogurt</div>
+        </div>
+
+        <div class="ph-section-title">Pantry Items</div>
+        <div class="ph-items">
+          <div class="ph-item">
+            <div class="ph-item-left">
+              <div class="ph-item-emoji">🥛</div>
+              <div>
+                <div class="ph-item-name">Milk</div>
+                <div class="ph-item-qty">1 gallon</div>
+              </div>
+            </div>
+            <span class="ph-item-exp exp-warn">2 days</span>
+          </div>
+          <div class="ph-item">
+            <div class="ph-item-left">
+              <div class="ph-item-emoji">🥚</div>
+              <div>
+                <div class="ph-item-name">Eggs</div>
+                <div class="ph-item-qty">6 left</div>
+              </div>
+            </div>
+            <span class="ph-item-exp exp-ok">12 days</span>
+          </div>
+          <div class="ph-item">
+            <div class="ph-item-left">
+              <div class="ph-item-emoji">🥬</div>
+              <div>
+                <div class="ph-item-name">Spinach</div>
+                <div class="ph-item-qty">1 bag</div>
+              </div>
+            </div>
+            <span class="ph-item-exp exp-warn">1 day</span>
+          </div>
+        </div>
+
+        <div class="ph-section-title">Tonight's Dinner Idea</div>
+        <div class="ph-meal">
+          <div class="ph-meal-label">Uses expiring items</div>
+          <div class="ph-meal-name">Spinach & Egg Frittata</div>
+          <div class="ph-meal-meta">Ready in 25 min &nbsp;·&nbsp; Uses 5 pantry items</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MORE APPS -->
+<div class="apps-grid-section">
+  <span class="section-label">More From Ascend Solutions</span>
+  <div class="apps-grid">
+
+    <div class="app-card">
+      <div class="app-card-top act-2">🌱</div>
+      <div class="app-card-name">Grow Together</div>
+      <div class="app-card-desc">Track milestones, celebrate wins, and build healthy habits as a family. Growth and wellness tracking designed for every age and stage.</div>
+      <div class="app-card-footer">
+        <span class="app-status-badge status-plan">Planned</span>
+        <div class="app-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#1C3557" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </div>
+
+    <div class="app-card">
+      <div class="app-card-top act-3">📸</div>
+      <div class="app-card-name">Family Memories</div>
+      <div class="app-card-desc">A private family photo album and journal for sharing moments, preserving memories, and keeping them in one place.</div>
+      <div class="app-card-footer">
+        <span class="app-status-badge status-plan">Planned</span>
+        <div class="app-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#1C3557" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </div>
+
+    <div class="app-card">
+      <div class="app-card-top act-4">💰</div>
+      <div class="app-card-name">Family Budget</div>
+      <div class="app-card-desc">Shared household budgeting made simple. Track spending, set savings goals, and keep the whole family on the same financial page.</div>
+      <div class="app-card-footer">
+        <span class="app-status-badge status-plan">Planned</span>
+        <div class="app-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#1C3557" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </div>
+
+    <div class="app-card">
+      <div class="app-card-top act-5">🎓</div>
+      <div class="app-card-name">Learn Together</div>
+      <div class="app-card-desc">Homework helpers, reading trackers, and study tools designed to make learning feel more supported at home.</div>
+      <div class="app-card-footer">
+        <span class="app-status-badge status-plan">Planned</span>
+        <div class="app-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#1C3557" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </div>
+
+    <div class="app-card">
+      <div class="app-card-top act-1">❤️</div>
+      <div class="app-card-name">Family Wellness</div>
+      <div class="app-card-desc">Mental and physical wellness tracking for the whole family. Build routines, track moods, and support each other every day.</div>
+      <div class="app-card-footer">
+        <span class="app-status-badge status-plan">Planned</span>
+        <div class="app-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#1C3557" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </div>
+
+    <div class="app-card" style="background: var(--cream); border-style: dashed; border-color: var(--gray-lt);">
+      <div class="app-card-top" style="background: var(--gray-lt); font-size: 22px;">✨</div>
+      <div class="app-card-name" style="color: var(--gray);">More Coming</div>
+      <div class="app-card-desc">We are always listening for the next household problem worth solving. Have an idea? We would love to hear it.</div>
+      <div class="app-card-footer">
+        <a href="mailto:skyler@ascendsolutions.dev" style="font-size: 13px; font-weight: 600; color: var(--sienna); text-decoration: none; border-bottom: 1.5px solid var(--sienna); padding-bottom: 1px;">Share your idea →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- WAITLIST -->
+<div id="waitlist" class="waitlist-section">
+  <div class="waitlist-content">
+    <div class="waitlist-eyebrow">Early Access · Pantrii</div>
+    <h2 class="waitlist-headline">Be the first to try<br/>Pantrii in your kitchen</h2>
+  </div>
+  <div class="waitlist-form">
+    <input type="email" class="waitlist-input" placeholder="your@email.com" />
+    <button class="btn-white" onclick="window.location='mailto:skyler@ascendsolutions.dev?subject=Pantrii Waitlist'">Join Waitlist</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="nav-logo">
+        <div class="logo-mark">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M10 2L17 16H3L10 2Z" fill="none" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 7L13.5 14H6.5L10 7Z" fill="white" opacity="0.4"/></svg>
+        </div>
+        <span class="logo-text">Ascend <span>Solutions</span></span>
+      </div>
+      <p class="footer-tagline">Technology built for families. Based in Utah. Built with purpose.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a href="index.html#about">About Us</a></li>
+        <li><a href="index.html#values">Our Values</a></li>
+        <li><a href="apps.html">Our Apps</a></li>
+        <li><a href="mailto:skyler@ascendsolutions.dev">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Apps</div>
+      <ul class="footer-links">
+        <li><a href="apps.html">Pantrii</a></li>
+        <li><a href="apps.html">Grow Together</a></li>
+        <li><a href="apps.html">Coming Soon</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Legal</div>
+      <ul class="footer-links">
+        <li><a href="legal.html">Privacy Policy</a></li>
+        <li><a href="legal.html#tos">Terms of Service</a></li>
+        <li><a href="legal.html#eula">EULA</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Ascend Solutions LLC. All rights reserved.</div>
+    <div class="footer-legal">
+      <a href="legal.html">Privacy</a>
+      <a href="legal.html#tos">Terms</a>
+      <a href="#">Utah, USA</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); });
+</script>
+</body>
+</html>

@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ascend Solutions | Technology Built for Families</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:    #1C3557;
+      --navy-lt: #2A4A72;
+      --cream:   #F7F3EE;
+      --sienna:  #E8734A;
+      --sage:    #4A9B7F;
+      --white:   #FDF9F5;
+      --gray:    #6B7280;
+      --gray-lt: #E8E4DF;
+      --text:    #1A1A2E;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(247, 243, 238, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(28, 53, 87, 0.08);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 2px 24px rgba(28,53,87,0.10); }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .logo-mark {
+      width: 36px; height: 36px;
+      background: var(--navy);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark svg { width: 20px; height: 20px; }
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px; font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.3px;
+    }
+    .logo-text span { color: var(--sienna); }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 14px; font-weight: 500;
+      color: var(--navy); text-decoration: none;
+      opacity: 0.75; transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+
+    .nav-cta {
+      background: var(--sienna);
+      color: white !important; opacity: 1 !important;
+      padding: 10px 22px; border-radius: 100px;
+      font-size: 14px !important; font-weight: 600 !important;
+      transition: background 0.2s, transform 0.15s !important;
+    }
+    .nav-cta:hover { background: #d4623a !important; transform: translateY(-1px); }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 120px 48px 80px;
+      overflow: hidden;
+    }
+
+    /* Sunrise arc background */
+    .hero-arc {
+      position: absolute; bottom: -10%; left: 50%;
+      transform: translateX(-50%);
+      width: 160%; height: 80%;
+      background: radial-gradient(ellipse at 50% 100%,
+        rgba(232, 115, 74, 0.12) 0%,
+        rgba(74, 155, 127, 0.08) 40%,
+        transparent 70%);
+      border-radius: 50% 50% 0 0 / 60% 60% 0 0;
+      pointer-events: none;
+    }
+
+    /* Floating soft circles */
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.35;
+    }
+    .orb-1 {
+      width: 480px; height: 480px;
+      background: radial-gradient(circle, rgba(232,115,74,0.2), transparent 70%);
+      top: -80px; right: -100px;
+      animation: float 8s ease-in-out infinite;
+    }
+    .orb-2 {
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(74,155,127,0.18), transparent 70%);
+      bottom: 60px; left: -60px;
+      animation: float 10s ease-in-out infinite reverse;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-20px); }
+    }
+
+    .hero-inner {
+      position: relative;
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center;
+      width: 100%;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--sienna);
+      background: rgba(232,115,74,0.1);
+      padding: 6px 14px; border-radius: 100px;
+      margin-bottom: 24px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--sienna);
+      border-radius: 50%;
+    }
+
+    .hero-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(40px, 5vw, 64px);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--navy);
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: var(--sienna);
+    }
+
+    .hero-sub {
+      font-size: 17px; font-weight: 400;
+      line-height: 1.7; color: var(--gray);
+      max-width: 480px;
+      margin-bottom: 40px;
+    }
+
+    .hero-actions {
+      display: flex; align-items: center; gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--navy);
+      color: white;
+      padding: 14px 32px; border-radius: 100px;
+      font-size: 15px; font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary:hover { background: var(--navy-lt); transform: translateY(-2px); }
+
+    .btn-secondary {
+      color: var(--navy);
+      font-size: 15px; font-weight: 500;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 6px;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.2s;
+      padding-bottom: 2px;
+    }
+    .btn-secondary:hover { border-color: var(--sienna); }
+    .btn-secondary svg { transition: transform 0.2s; }
+    .btn-secondary:hover svg { transform: translateX(4px); }
+
+    .hero-trust {
+      margin-top: 48px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .trust-avatars {
+      display: flex;
+    }
+    .trust-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 2px solid var(--cream);
+      margin-left: -10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 600; color: white;
+    }
+    .trust-avatar:first-child { margin-left: 0; }
+    .ta1 { background: var(--navy); }
+    .ta2 { background: var(--sienna); }
+    .ta3 { background: var(--sage); }
+    .ta4 { background: #8B6BAE; }
+    .ta5 { background: #D4A843; }
+
+    .trust-text {
+      font-size: 13px; color: var(--gray);
+      line-height: 1.4;
+    }
+    .trust-text strong { color: var(--navy); }
+
+    /* PHONE MOCKUP */
+    .hero-visual {
+      display: flex; justify-content: center; align-items: center;
+      position: relative;
+    }
+
+    .phone-wrap {
+      position: relative;
+      animation: floatPhone 6s ease-in-out infinite;
+    }
+    @keyframes floatPhone {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50%       { transform: translateY(-16px) rotate(-2deg); }
+    }
+
+    .phone {
+      width: 260px;
+      background: var(--navy);
+      border-radius: 44px;
+      padding: 12px;
+      box-shadow:
+        0 40px 80px rgba(28,53,87,0.3),
+        0 0 0 1px rgba(255,255,255,0.1);
+      position: relative;
+      z-index: 2;
+    }
+    .phone-inner {
+      background: var(--cream);
+      border-radius: 36px;
+      overflow: hidden;
+      height: 500px;
+      display: flex; flex-direction: column;
+    }
+    .phone-notch {
+      width: 80px; height: 24px;
+      background: var(--navy);
+      border-radius: 0 0 16px 16px;
+      margin: 0 auto;
+    }
+    .phone-screen {
+      flex: 1; padding: 16px 14px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+
+    /* App UI inside phone */
+    .app-header {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .app-greeting {
+      font-size: 11px; color: var(--gray); font-weight: 500;
+    }
+    .app-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px; color: var(--navy); font-weight: 700;
+    }
+    .app-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--sienna);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; color: white; font-weight: 600;
+    }
+
+    .app-card {
+      background: white;
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: 0 2px 12px rgba(28,53,87,0.07);
+    }
+    .app-card-label {
+      font-size: 9px; font-weight: 600; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--sienna);
+      margin-bottom: 4px;
+    }
+    .app-card-title {
+      font-size: 13px; font-weight: 600; color: var(--navy);
+      margin-bottom: 8px;
+    }
+    .app-progress-bar {
+      height: 5px; background: var(--gray-lt); border-radius: 99px;
+      overflow: hidden;
+    }
+    .app-progress-fill {
+      height: 100%; border-radius: 99px;
+      background: linear-gradient(90deg, var(--sienna), var(--sage));
+    }
+    .app-progress-meta {
+      display: flex; justify-content: space-between;
+      font-size: 9px; color: var(--gray); margin-top: 4px;
+    }
+
+    .app-row {
+      display: flex; gap: 8px;
+    }
+    .app-mini-card {
+      flex: 1; background: white;
+      border-radius: 12px; padding: 10px;
+      box-shadow: 0 2px 8px rgba(28,53,87,0.06);
+    }
+    .app-mini-icon {
+      font-size: 18px; margin-bottom: 4px;
+    }
+    .app-mini-label {
+      font-size: 9px; font-weight: 600; color: var(--gray);
+    }
+    .app-mini-val {
+      font-size: 14px; font-weight: 700; color: var(--navy);
+    }
+
+    .app-activity {
+      background: white; border-radius: 12px; padding: 10px;
+      box-shadow: 0 2px 8px rgba(28,53,87,0.06);
+    }
+    .app-activity-title {
+      font-size: 9px; font-weight: 600; color: var(--gray);
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+    }
+    .activity-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 4px 0;
+    }
+    .activity-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .activity-text {
+      font-size: 10px; color: var(--navy);
+    }
+    .activity-time {
+      font-size: 9px; color: var(--gray); margin-left: auto;
+    }
+
+    /* Floating badge on phone */
+    .phone-badge {
+      position: absolute;
+      background: white;
+      border-radius: 14px;
+      padding: 10px 14px;
+      box-shadow: 0 8px 32px rgba(28,53,87,0.18);
+      display: flex; align-items: center; gap: 8px;
+      white-space: nowrap;
+      z-index: 3;
+    }
+    .badge-1 {
+      top: 60px; right: -60px;
+      animation: badgeFloat 7s ease-in-out infinite;
+    }
+    .badge-2 {
+      bottom: 100px; left: -70px;
+      animation: badgeFloat 9s ease-in-out infinite reverse;
+    }
+    @keyframes badgeFloat {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+    .badge-icon { font-size: 20px; }
+    .badge-label { font-size: 11px; font-weight: 600; color: var(--navy); }
+    .badge-sub   { font-size: 10px; color: var(--gray); }
+
+    /* MARQUEE */
+    .marquee-section {
+      padding: 28px 0;
+      background: var(--navy);
+      overflow: hidden;
+      position: relative;
+    }
+    .marquee-track {
+      display: flex; gap: 48px;
+      animation: marquee 22s linear infinite;
+      width: max-content;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .marquee-item {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 13px; font-weight: 500;
+      color: rgba(255,255,255,0.6);
+      white-space: nowrap;
+    }
+    .marquee-item span { color: var(--sienna); font-size: 18px; }
+
+    /* VALUE PROPS */
+    .values-section {
+      padding: 100px 48px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .section-eyebrow {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--sienna);
+      margin-bottom: 16px;
+      display: block;
+    }
+    .section-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 700; color: var(--navy);
+      letter-spacing: -0.5px; line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 16px; color: var(--gray);
+      line-height: 1.7; max-width: 520px;
+      margin-bottom: 60px;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .value-card {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 36px 32px;
+      border: 1px solid rgba(28,53,87,0.07);
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .value-card::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .value-card:nth-child(1)::after { background: var(--sienna); }
+    .value-card:nth-child(2)::after { background: var(--sage); }
+    .value-card:nth-child(3)::after { background: var(--navy); }
+    .value-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(28,53,87,0.1); }
+    .value-card:hover::after { opacity: 1; }
+
+    .value-icon {
+      width: 52px; height: 52px;
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      margin-bottom: 24px;
+    }
+    .vi-1 { background: rgba(232,115,74,0.12); }
+    .vi-2 { background: rgba(74,155,127,0.12); }
+    .vi-3 { background: rgba(28,53,87,0.08); }
+
+    .value-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px; font-weight: 700;
+      color: var(--navy); margin-bottom: 12px;
+    }
+    .value-body {
+      font-size: 14px; color: var(--gray);
+      line-height: 1.7;
+    }
+
+    /* APPS TEASER */
+    .apps-section {
+      background: var(--navy);
+      padding: 100px 48px;
+      position: relative; overflow: hidden;
+    }
+    .apps-inner {
+      max-width: 1200px; margin: 0 auto;
+    }
+    .apps-section .section-eyebrow { color: rgba(232,115,74,0.9); }
+    .apps-section .section-headline { color: white; }
+    .apps-section .section-sub { color: rgba(255,255,255,0.55); }
+
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .app-teaser {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 32px 28px;
+      transition: background 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+    .app-teaser:hover {
+      background: rgba(255,255,255,0.09);
+      transform: translateY(-4px);
+    }
+    .app-teaser-icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; margin-bottom: 20px;
+    }
+    .ati-1 { background: rgba(232,115,74,0.2); }
+    .ati-2 { background: rgba(74,155,127,0.2); }
+    .ati-3 { background: rgba(255,255,255,0.1); }
+
+    .app-teaser-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px; font-weight: 700;
+      color: white; margin-bottom: 8px;
+    }
+    .app-teaser-desc {
+      font-size: 13px; color: rgba(255,255,255,0.55);
+      line-height: 1.6; margin-bottom: 20px;
+    }
+    .app-teaser-tag {
+      display: inline-block;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 100px;
+      color: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    /* FOUNDERS */
+    .founders-section {
+      padding: 100px 48px;
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .founders-headline { font-family: 'Playfair Display', serif; font-size: clamp(28px, 3vw, 40px); font-weight: 700; color: var(--navy); letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 16px; }
+    .founders-body { font-size: 15px; color: var(--gray); line-height: 1.8; margin-bottom: 32px; }
+    .founders-link {
+      color: var(--sienna); font-weight: 600; font-size: 14px;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 6px;
+      border-bottom: 2px solid var(--sienna);
+      padding-bottom: 2px;
+      transition: opacity 0.2s;
+    }
+    .founders-link:hover { opacity: 0.75; }
+
+    .founder-cards {
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .founder-card {
+      background: var(--white);
+      border: 1px solid rgba(28,53,87,0.07);
+      border-radius: 18px;
+      padding: 20px 24px;
+      display: flex; align-items: center; gap: 16px;
+      transition: transform 0.2s;
+    }
+    .founder-card:hover { transform: translateX(6px); }
+    .founder-avatar {
+      width: 52px; height: 52px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 700; color: white;
+      flex-shrink: 0;
+    }
+    .fa-s { background: linear-gradient(135deg, var(--navy), var(--navy-lt)); }
+    .fa-a { background: linear-gradient(135deg, var(--sage), #3d8a6e); }
+    .fa-c { background: linear-gradient(135deg, var(--sienna), #d4623a); }
+
+    .founder-info { flex: 1; }
+    .founder-name { font-size: 15px; font-weight: 600; color: var(--navy); }
+    .founder-role { font-size: 12px; color: var(--gray); margin-top: 2px; }
+    .founder-badge {
+      font-size: 11px; font-weight: 600;
+      padding: 4px 10px; border-radius: 100px;
+      background: rgba(28,53,87,0.07); color: var(--navy);
+    }
+
+    /* CTA BAND */
+    .cta-section {
+      margin: 0 48px 80px;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-lt) 100%);
+      border-radius: 32px;
+      padding: 72px 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 40px;
+      position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; top: -40%; right: -10%;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(232,115,74,0.15), transparent 70%);
+      border-radius: 50%;
+    }
+    .cta-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(24px, 3vw, 38px);
+      font-weight: 700; color: white;
+      letter-spacing: -0.5px; line-height: 1.2;
+      max-width: 480px;
+    }
+    .cta-headline em { font-style: italic; color: var(--sienna); }
+    .cta-actions { display: flex; gap: 14px; flex-shrink: 0; flex-wrap: wrap; }
+    .btn-light {
+      background: white; color: var(--navy);
+      padding: 14px 28px; border-radius: 100px;
+      font-size: 14px; font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.15s, opacity 0.2s;
+      white-space: nowrap;
+    }
+    .btn-light:hover { transform: translateY(-2px); opacity: 0.92; }
+    .btn-ghost {
+      background: transparent; color: white;
+      padding: 14px 28px; border-radius: 100px;
+      font-size: 14px; font-weight: 600;
+      text-decoration: none;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      transition: border-color 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+    .btn-ghost:hover { border-color: white; transform: translateY(-2px); }
+
+    /* FOOTER */
+    footer {
+      background: #12243A;
+      padding: 60px 48px 40px;
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; margin-bottom: 48px;
+    }
+    .footer-brand .logo-text { color: white; }
+    .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.6; margin-top: 12px; max-width: 240px; }
+    .footer-col-title { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 16px; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a { font-size: 13px; color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: white; }
+    .footer-bottom {
+      max-width: 1200px; margin: 0 auto;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 24px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); }
+    .footer-legal { display: flex; gap: 24px; }
+    .footer-legal a { font-size: 12px; color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.2s; }
+    .footer-legal a:hover { color: rgba(255,255,255,0.6); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 24px 60px; }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .values-section, .founders-section { padding: 60px 24px; }
+      .values-grid { grid-template-columns: 1fr; }
+      .apps-grid { grid-template-columns: 1fr; }
+      .apps-section { padding: 60px 24px; }
+      .founders-section { grid-template-columns: 1fr; gap: 40px; }
+      .cta-section { margin: 0 24px 60px; padding: 48px 32px; flex-direction: column; }
+      footer { padding: 48px 24px 32px; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 2L17 16H3L10 2Z" fill="none" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M10 7L13.5 14H6.5L10 7Z" fill="white" opacity="0.4"/>
+      </svg>
+    </div>
+    <span class="logo-text">Ascend <span>Solutions</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#apps">Our Apps</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#values">Why Ascend</a></li>
+    <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-arc"></div>
+  <div class="hero-orb orb-1"></div>
+  <div class="hero-orb orb-2"></div>
+
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Built for families</div>
+      <h1 class="hero-headline">
+        Practical apps for busy <em>family life</em>
+      </h1>
+      <p class="hero-sub">
+        Ascend Solutions builds mobile apps for the everyday parts of running a home, from meals and errands to routines and shared responsibilities.
+      </p>
+      <div class="hero-actions">
+        <a href="#apps" class="btn-primary">
+          Explore Our Apps
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#about" class="btn-secondary">
+          Meet the team
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#1C3557" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-avatars">
+          <div class="trust-avatar ta1">S</div>
+          <div class="trust-avatar ta2">A</div>
+          <div class="trust-avatar ta3">C</div>
+          <div class="trust-avatar ta4">M</div>
+          <div class="trust-avatar ta5">R</div>
+        </div>
+        <div class="trust-text">
+          <strong>Family-first</strong> from day one<br/>
+          Founded by parents, built with purpose
+        </div>
+      </div>
+    </div>
+
+    <!-- Phone Mockup -->
+    <div class="hero-visual">
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="phone-inner">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="app-header">
+                <div>
+                  <div class="app-greeting">Good morning 👋</div>
+                  <div class="app-name">Pantrii</div>
+                </div>
+                <div class="app-avatar">S</div>
+              </div>
+
+              <div class="app-card" style="background:rgba(232,115,74,0.08); border:1px solid rgba(232,115,74,0.2);">
+                <div class="app-card-label">⚠️ Expiring Soon</div>
+                <div class="app-card-title">Milk · Spinach · Yogurt</div>
+                <div class="app-progress-bar">
+                  <div class="app-progress-fill" style="width:80%"></div>
+                </div>
+                <div class="app-progress-meta">
+                  <span>Use within 2 days</span>
+                  <span>3 items</span>
+                </div>
+              </div>
+
+              <div class="app-row">
+                <div class="app-mini-card">
+                  <div class="app-mini-icon">🥫</div>
+                  <div class="app-mini-label">Pantry</div>
+                  <div class="app-mini-val">42</div>
+                </div>
+                <div class="app-mini-card">
+                  <div class="app-mini-icon">🍽️</div>
+                  <div class="app-mini-label">Recipes</div>
+                  <div class="app-mini-val">8</div>
+                </div>
+                <div class="app-mini-card">
+                  <div class="app-mini-icon">🛒</div>
+                  <div class="app-mini-label">List</div>
+                  <div class="app-mini-val">5</div>
+                </div>
+              </div>
+
+              <div class="app-activity">
+                <div class="app-activity-title">Tonight's Dinner Idea</div>
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:#E8734A"></div>
+                  <div class="activity-text">Spinach & Egg Frittata</div>
+                  <div class="activity-time">25 min</div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:#4A9B7F"></div>
+                  <div class="activity-text">Yogurt Parfait Breakfast</div>
+                  <div class="activity-time">10 min</div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:#1C3557"></div>
+                  <div class="activity-text">Groceries auto-ordered</div>
+                  <div class="activity-time">Just now</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating badges -->
+        <div class="phone-badge badge-1">
+          <div class="badge-icon">⭐</div>
+          <div>
+            <div class="badge-label">4.9 Rating</div>
+            <div class="badge-sub">App Store</div>
+          </div>
+        </div>
+        <div class="phone-badge badge-2">
+          <div class="badge-icon">👨‍👩‍👧‍👦</div>
+          <div>
+            <div class="badge-label">Built for families</div>
+            <div class="badge-sub">Every feature</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item"><span>✦</span> Family Scheduling</div>
+    <div class="marquee-item"><span>✦</span> Built in Utah</div>
+    <div class="marquee-item"><span>✦</span> iOS &amp; Android</div>
+    <div class="marquee-item"><span>✦</span> Privacy First</div>
+    <div class="marquee-item"><span>✦</span> Helpful Automation</div>
+    <div class="marquee-item"><span>✦</span> Family Wellness</div>
+    <div class="marquee-item"><span>✦</span> Shared Calendars</div>
+    <div class="marquee-item"><span>✦</span> Task Management</div>
+    <div class="marquee-item"><span>✦</span> Family Memories</div>
+    <div class="marquee-item"><span>✦</span> Daily Connection</div>
+    <!-- repeat for seamless loop -->
+    <div class="marquee-item"><span>✦</span> Family Scheduling</div>
+    <div class="marquee-item"><span>✦</span> Built in Utah</div>
+    <div class="marquee-item"><span>✦</span> iOS &amp; Android</div>
+    <div class="marquee-item"><span>✦</span> Privacy First</div>
+    <div class="marquee-item"><span>✦</span> Helpful Automation</div>
+    <div class="marquee-item"><span>✦</span> Family Wellness</div>
+    <div class="marquee-item"><span>✦</span> Shared Calendars</div>
+    <div class="marquee-item"><span>✦</span> Task Management</div>
+    <div class="marquee-item"><span>✦</span> Family Memories</div>
+    <div class="marquee-item"><span>✦</span> Daily Connection</div>
+  </div>
+</div>
+
+<!-- VALUES -->
+<section id="values" class="values-section">
+  <span class="section-eyebrow">Why Ascend</span>
+  <h2 class="section-headline">We build for the way<br/>families actually live</h2>
+  <p class="section-sub">Before we add a feature, we ask whether it would help in a real kitchen, carpool, bedtime routine, or Saturday morning grocery run.</p>
+
+  <div class="values-grid">
+    <div class="value-card">
+      <div class="value-icon vi-1">🏡</div>
+      <h3 class="value-title">Family First Design</h3>
+      <p class="value-body">We start with family use cases instead of adding them later. The goal is simple: tools that feel useful in the middle of a normal day at home.</p>
+    </div>
+    <div class="value-card">
+      <div class="value-icon vi-2">🔒</div>
+      <h3 class="value-title">Privacy You Can Trust</h3>
+      <p class="value-body">Your family's data belongs to your family. We never sell user data, we minimize what we collect, and we exceed COPPA requirements for any features that involve children.</p>
+    </div>
+    <div class="value-card">
+      <div class="value-icon vi-3">⚡</div>
+      <h3 class="value-title">Simple & Powerful</h3>
+      <p class="value-body">Busy families do not have time to learn complicated software. We keep the experience clear, quick, and easy to come back to.</p>
+    </div>
+  </div>
+</section>
+
+<!-- APPS -->
+<section id="apps" class="apps-section">
+  <div class="apps-inner">
+    <span class="section-eyebrow">Our Apps</span>
+    <h2 class="section-headline">Solutions for every<br/>part of family life</h2>
+    <p class="section-sub">We are building one app at a time, each focused on a real household problem we understand personally.</p>
+
+    <div class="apps-grid">
+      <div class="app-teaser">
+        <div class="app-teaser-icon ati-1">🥫</div>
+        <div class="app-teaser-name">Pantrii</div>
+        <div class="app-teaser-desc">A better way to track food, plan meals, and keep the grocery list from turning into guesswork.</div>
+        <span class="app-teaser-tag">Coming Soon</span>
+      </div>
+      <div class="app-teaser">
+        <div class="app-teaser-icon ati-2">🌱</div>
+        <div class="app-teaser-name">Grow Together</div>
+        <div class="app-teaser-desc">Track milestones, celebrate wins, and build healthy habits as a family. Growth tracking for every age.</div>
+        <span class="app-teaser-tag">In Development</span>
+      </div>
+      <div class="app-teaser">
+        <div class="app-teaser-icon ati-3">💬</div>
+        <div class="app-teaser-name">More Coming</div>
+        <div class="app-teaser-desc">We are just getting started. New family tools are already on the roadmap.</div>
+        <span class="app-teaser-tag">Stay Tuned</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDERS / ABOUT -->
+<section id="about" class="founders-section">
+  <div>
+    <span class="section-eyebrow">Our Story</span>
+    <h2 class="founders-headline">Three founders.<br/>One shared belief.</h2>
+    <p class="founders-body">Ascend Solutions was founded by Skyler, Aaron, and Chris in Utah. We are building the kind of apps we would want in our own homes: useful, respectful of privacy, and easy to use when life is already full.</p>
+    <a href="#contact" class="founders-link">
+      Get in touch
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#E8734A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+  <div class="founder-cards">
+    <div class="founder-card">
+      <div class="founder-avatar fa-s">S</div>
+      <div class="founder-info">
+        <div class="founder-name">Skyler</div>
+        <div class="founder-role">Chief Executive Officer</div>
+      </div>
+      <div class="founder-badge">CEO</div>
+    </div>
+    <div class="founder-card">
+      <div class="founder-avatar fa-a">A</div>
+      <div class="founder-info">
+        <div class="founder-name">Aaron</div>
+        <div class="founder-role">Chief Financial Officer</div>
+      </div>
+      <div class="founder-badge">CFO</div>
+    </div>
+    <div class="founder-card">
+      <div class="founder-avatar fa-c">C</div>
+      <div class="founder-info">
+        <div class="founder-name">Chris</div>
+        <div class="founder-role">Chief Technology Officer</div>
+      </div>
+      <div class="founder-badge">CTO</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div id="contact" class="cta-section">
+  <h2 class="cta-headline">Want to follow what we are <em>building next</em>?</h2>
+  <div class="cta-actions">
+    <a href="mailto:hello@ascendsolutions.dev" class="btn-light">Get Early Access</a>
+    <a href="mailto:hello@ascendsolutions.dev" class="btn-ghost">Contact Us</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="nav-logo">
+        <div class="logo-mark">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M10 2L17 16H3L10 2Z" fill="none" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 7L13.5 14H6.5L10 7Z" fill="white" opacity="0.4"/></svg>
+        </div>
+        <span class="logo-text">Ascend <span>Solutions</span></span>
+      </div>
+      <p class="footer-tagline">Technology built for families. Based in Utah. Built with purpose.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#values">Our Values</a></li>
+        <li><a href="#apps">Our Apps</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Apps</div>
+      <ul class="footer-links">
+        <li><a href="apps.html">Pantrii</a></li>
+        <li><a href="apps.html">Grow Together</a></li>
+        <li><a href="apps.html">Coming Soon</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Legal</div>
+      <ul class="footer-links">
+        <li><a href="legal.html">Privacy Policy</a></li>
+        <li><a href="legal.html#tos">Terms of Service</a></li>
+        <li><a href="legal.html#eula">EULA</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Ascend Solutions LLC. All rights reserved.</div>
+    <div class="footer-legal">
+      <a href="legal.html">Privacy</a>
+      <a href="legal.html#tos">Terms</a>
+      <a href="#about">Utah, USA</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Sticky nav shadow on scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+</script>
+</body>
+</html>

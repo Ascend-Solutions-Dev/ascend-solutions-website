@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Legal | Ascend Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:    #1C3557;
+      --navy-lt: #2A4A72;
+      --cream:   #F7F3EE;
+      --sienna:  #E8734A;
+      --sage:    #4A9B7F;
+      --white:   #FDF9F5;
+      --gray:    #6B7280;
+      --gray-lt: #E8E4DF;
+      --text:    #1A1A2E;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--cream); color: var(--text); overflow-x: hidden; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 18px 48px; background: rgba(247,243,238,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(28,53,87,0.08); transition: box-shadow 0.3s; }
+    nav.scrolled { box-shadow: 0 2px 24px rgba(28,53,87,0.10); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark { width: 36px; height: 36px; background: var(--navy); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    .logo-mark svg { width: 20px; height: 20px; }
+    .logo-text { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; }
+    .logo-text span { color: var(--sienna); }
+    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+    .nav-links a { font-size: 14px; font-weight: 500; color: var(--navy); text-decoration: none; opacity: 0.75; transition: opacity 0.2s; }
+    .nav-links a:hover { opacity: 1; }
+    .nav-cta { background: var(--sienna); color: white !important; opacity: 1 !important; padding: 10px 22px; border-radius: 100px; font-size: 14px !important; font-weight: 600 !important; transition: background 0.2s, transform 0.15s !important; }
+    .nav-cta:hover { background: #d4623a !important; transform: translateY(-1px); }
+
+    /* LAYOUT */
+    .legal-layout {
+      max-width: 1100px; margin: 0 auto;
+      padding: 140px 48px 100px;
+      display: grid; grid-template-columns: 220px 1fr;
+      gap: 64px; align-items: start;
+    }
+
+    /* SIDEBAR */
+    .legal-sidebar { position: sticky; top: 100px; }
+    .sidebar-label { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--sienna); margin-bottom: 16px; }
+    .sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .sidebar-nav li a {
+      display: block; font-size: 13px; font-weight: 500;
+      color: var(--gray); text-decoration: none;
+      padding: 7px 12px; border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+      border-left: 2px solid transparent;
+    }
+    .sidebar-nav li a:hover { background: rgba(28,53,87,0.05); color: var(--navy); }
+    .sidebar-nav li a.active { color: var(--navy); border-left-color: var(--sienna); background: rgba(232,115,74,0.07); }
+    .sidebar-divider { height: 1px; background: var(--gray-lt); margin: 12px 0; }
+    .sidebar-updated { font-size: 11px; color: var(--gray); padding: 0 12px; margin-top: 16px; }
+
+    /* CONTENT */
+    .legal-content { min-width: 0; }
+
+    .doc-section { margin-bottom: 80px; padding-bottom: 80px; border-bottom: 1px solid var(--gray-lt); }
+    .doc-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+    .doc-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--sienna); margin-bottom: 12px; display: block; }
+    .doc-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3vw, 40px); font-weight: 700;
+      color: var(--navy); letter-spacing: -0.5px; line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .doc-meta { font-size: 12px; color: var(--gray); margin-bottom: 32px; }
+    .doc-meta strong { color: var(--navy); }
+
+    .doc-intro {
+      background: var(--white); border: 1px solid rgba(28,53,87,0.07);
+      border-radius: 16px; padding: 24px 28px; margin-bottom: 40px;
+      font-size: 14px; color: var(--gray); line-height: 1.7;
+    }
+    .doc-intro strong { color: var(--navy); }
+
+    .doc-h2 { font-size: 17px; font-weight: 600; color: var(--navy); margin: 36px 0 12px; }
+    .doc-h3 { font-size: 14px; font-weight: 600; color: var(--navy-lt); margin: 24px 0 8px; }
+    .doc-p { font-size: 14px; color: var(--gray); line-height: 1.8; margin-bottom: 14px; }
+    .doc-ul { list-style: none; margin: 0 0 14px 0; display: flex; flex-direction: column; gap: 8px; }
+    .doc-ul li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--gray); line-height: 1.6; }
+    .doc-ul li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--sienna); margin-top: 7px; flex-shrink: 0; }
+
+    .doc-caps { font-size: 13px; color: var(--gray); line-height: 1.7; margin-bottom: 14px; font-weight: 500; }
+
+    .contact-block {
+      background: var(--navy); border-radius: 16px; padding: 24px 28px;
+      margin-top: 24px;
+    }
+    .contact-block p { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.7; }
+    .contact-block a { color: var(--sienna); }
+
+    /* FOOTER */
+    footer { background: #12243A; padding: 60px 48px 40px; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer-brand .logo-text { color: white; }
+    .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.6; margin-top: 12px; max-width: 240px; }
+    .footer-col-title { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 16px; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a { font-size: 13px; color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: white; }
+    .footer-bottom { max-width: 1200px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); }
+    .footer-legal { display: flex; gap: 24px; }
+    .footer-legal a { font-size: 12px; color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.2s; }
+    .footer-legal a:hover { color: rgba(255,255,255,0.6); }
+
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .legal-layout { grid-template-columns: 1fr; padding: 120px 24px 60px; gap: 0; }
+      .legal-sidebar { position: static; margin-bottom: 40px; }
+      footer { padding: 48px 24px 32px; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 20 20" fill="none"><path d="M10 2L17 16H3L10 2Z" fill="none" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 7L13.5 14H6.5L10 7Z" fill="white" opacity="0.4"/></svg>
+    </div>
+    <span class="logo-text">Ascend <span>Solutions</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="apps.html">Our Apps</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#values">Why Ascend</a></li>
+    <li><a href="mailto:hello@ascendsolutions.dev" class="nav-cta">Get in Touch</a></li>
+  </ul>
+</nav>
+
+<div class="legal-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="legal-sidebar">
+    <div class="sidebar-label">Legal Documents</div>
+    <ul class="sidebar-nav">
+      <li><a href="#privacy" class="active">Privacy Policy</a></li>
+      <li><a href="#tos">Terms of Service</a></li>
+      <li><a href="#eula">EULA</a></li>
+    </ul>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-updated">Last updated<br/><strong style="color:var(--navy)">July 14, 2026</strong></div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="legal-content">
+
+    <!-- PRIVACY POLICY -->
+    <section class="doc-section" id="privacy">
+      <span class="doc-eyebrow">Legal</span>
+      <h1 class="doc-title">Privacy Policy</h1>
+      <div class="doc-meta">Effective Date: <strong>July 14, 2026</strong> &nbsp;·&nbsp; Last Updated: <strong>July 14, 2026</strong></div>
+
+      <div class="doc-intro">
+        <strong>Our commitment:</strong> Ascend Solutions LLC builds for families. We take the privacy of your family, especially your children, seriously. We never sell your data, we minimize what we collect, and we exceed COPPA requirements for any features involving children under 13.
+      </div>
+
+      <h2 class="doc-h2">1. Introduction</h2>
+      <p class="doc-p">Welcome to Ascend Solutions LLC ("Ascend Solutions," "we," "us," or "our"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile applications and related services (collectively, the "Services"). By using our Services, you agree to the terms of this Privacy Policy.</p>
+
+      <h2 class="doc-h2">2. Information We Collect</h2>
+      <h3 class="doc-h3">Information You Provide</h3>
+      <ul class="doc-ul">
+        <li>Account registration information (name, email address, username, password)</li>
+        <li>Profile information you choose to provide</li>
+        <li>Communications you send to us</li>
+        <li>Payment information (processed securely through third-party processors)</li>
+      </ul>
+      <h3 class="doc-h3">Information Collected Automatically</h3>
+      <ul class="doc-ul">
+        <li>Device information (device type, operating system, unique device identifiers)</li>
+        <li>Usage data (features used, time spent, actions taken within the app)</li>
+        <li>Log data (IP address, pages visited, time and date of visits)</li>
+        <li>Location data (only if you grant permission)</li>
+        <li>Crash reports and performance data</li>
+      </ul>
+
+      <h2 class="doc-h2">3. Children's Privacy (COPPA)</h2>
+      <p class="doc-p">Our Services are designed for families. We do not knowingly collect personal information from children under the age of 13 without verifiable parental consent. If you are a parent or guardian and believe your child has provided us with personal information without your consent, please contact us immediately at <a href="mailto:legal@ascendsolutions.dev" style="color:var(--sienna)">legal@ascendsolutions.dev</a>. We will take steps to remove such information promptly.</p>
+
+      <h2 class="doc-h2">4. How We Use Your Information</h2>
+      <ul class="doc-ul">
+        <li>Provide, operate, and maintain our Services</li>
+        <li>Improve, personalize, and expand our Services</li>
+        <li>Process transactions and send related information</li>
+        <li>Send administrative information, updates, and security alerts</li>
+        <li>Detect, prevent, and address technical issues and fraud</li>
+        <li>Comply with legal obligations</li>
+      </ul>
+
+      <h2 class="doc-h2">5. How We Share Your Information</h2>
+      <p class="doc-p">We do not sell, trade, or rent your personal information to third parties. We may share your information only with trusted service providers who assist in operating our Services, when required by law, or in the event of a business transfer (with notice provided to you).</p>
+
+      <h2 class="doc-h2">6. Your Rights</h2>
+      <ul class="doc-ul">
+        <li><strong>Access & Correction:</strong> Update your information through account settings or by contacting us</li>
+        <li><strong>Deletion:</strong> Request deletion of your data at any time</li>
+        <li><strong>California (CCPA):</strong> Right to know, delete, and opt out of sale of personal information</li>
+        <li><strong>EU/UK (GDPR):</strong> Right to access, rectify, erase, and port your data</li>
+      </ul>
+
+      <h2 class="doc-h2">7. Contact Us</h2>
+      <div class="contact-block">
+        <p>Questions about this Privacy Policy? Contact us at:<br/><br/>
+        <strong style="color:white">Ascend Solutions LLC</strong><br/>
+        Email: <a href="mailto:legal@ascendsolutions.dev">legal@ascendsolutions.dev</a><br/>
+        Website: <a href="https://ascendsolutions.dev">ascendsolutions.dev</a><br/>
+        State of Formation: Utah, USA</p>
+      </div>
+    </section>
+
+    <!-- TERMS OF SERVICE -->
+    <section class="doc-section" id="tos">
+      <span class="doc-eyebrow">Legal</span>
+      <h1 class="doc-title">Terms of Service</h1>
+      <div class="doc-meta">Effective Date: <strong>July 14, 2026</strong> &nbsp;·&nbsp; Last Updated: <strong>July 14, 2026</strong></div>
+
+      <div class="doc-intro">
+        By downloading, installing, or using our Services, you confirm that you have read, understood, and agree to be bound by these Terms of Service. If you do not agree, do not use our Services.
+      </div>
+
+      <h2 class="doc-h2">1. Acceptance of Terms</h2>
+      <p class="doc-p">These Terms of Service ("Terms") constitute a legally binding agreement between you and Ascend Solutions LLC governing your access to and use of our mobile applications, websites, and related services (collectively, the "Services").</p>
+
+      <h2 class="doc-h2">2. Eligibility</h2>
+      <p class="doc-p">You must be at least 18 years of age to create an account. If you are creating an account on behalf of a minor child, you represent that you are the parent or legal guardian and accept these Terms on their behalf.</p>
+
+      <h2 class="doc-h2">3. Account Registration</h2>
+      <ul class="doc-ul">
+        <li>Provide accurate, current, and complete information during registration</li>
+        <li>Keep your password secure and confidential</li>
+        <li>Notify us immediately of any unauthorized use of your account</li>
+        <li>Accept responsibility for all activities that occur under your account</li>
+      </ul>
+
+      <h2 class="doc-h2">4. Acceptable Use</h2>
+      <p class="doc-p">You agree to use our Services only for lawful purposes. You agree not to impersonate others, attempt unauthorized access, interfere with the Services, upload malicious code, or use the Services to harass or harm others.</p>
+
+      <h2 class="doc-h2">5. Intellectual Property</h2>
+      <p class="doc-p">The Services and all contents, including software, text, designs, images, and audio, are owned by Ascend Solutions LLC and protected by U.S. and international intellectual property laws. We grant you a limited, non-exclusive, non-transferable license to access and use the Services for personal, non-commercial use.</p>
+
+      <h2 class="doc-h2">6. Disclaimers</h2>
+      <p class="doc-caps">THE SERVICES ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND. ASCEND SOLUTIONS LLC DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.</p>
+
+      <h2 class="doc-h2">7. Limitation of Liability</h2>
+      <p class="doc-caps">TO THE FULLEST EXTENT PERMITTED BY LAW, ASCEND SOLUTIONS LLC SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF OR IN CONNECTION WITH YOUR USE OF THE SERVICES.</p>
+
+      <h2 class="doc-h2">8. Governing Law</h2>
+      <p class="doc-p">These Terms are governed by the laws of the State of Utah, without regard to conflict of law provisions. Disputes shall be resolved through binding arbitration under American Arbitration Association rules. You waive any right to participate in class action proceedings.</p>
+
+      <h2 class="doc-h2">9. Contact</h2>
+      <div class="contact-block">
+        <p>Questions about these Terms? Contact us at:<br/><br/>
+        <strong style="color:white">Ascend Solutions LLC</strong><br/>
+        Email: <a href="mailto:legal@ascendsolutions.dev">legal@ascendsolutions.dev</a><br/>
+        Website: <a href="https://ascendsolutions.dev">ascendsolutions.dev</a></p>
+      </div>
+    </section>
+
+    <!-- EULA -->
+    <section class="doc-section" id="eula">
+      <span class="doc-eyebrow">Legal</span>
+      <h1 class="doc-title">End User License Agreement</h1>
+      <div class="doc-meta">Effective Date: <strong>July 14, 2026</strong> &nbsp;·&nbsp; Last Updated: <strong>July 14, 2026</strong></div>
+
+      <div class="doc-intro">
+        This EULA is concluded between you and <strong>Ascend Solutions LLC</strong> only, not with Apple Inc. or Google LLC. Ascend Solutions LLC, not the App Store Providers, is solely responsible for the Application and its content.
+      </div>
+
+      <h2 class="doc-h2">1. License Grant</h2>
+      <p class="doc-p">Ascend Solutions LLC grants you a limited, non-exclusive, non-transferable, revocable license to download and install the Application on any Apple iOS or Android device you own or control, and to use the Application for your personal, non-commercial purposes.</p>
+
+      <h2 class="doc-h2">2. Restrictions</h2>
+      <ul class="doc-ul">
+        <li>Copy, modify, or distribute the Application or any portion thereof</li>
+        <li>Reverse engineer, disassemble, or attempt to derive the source code</li>
+        <li>Remove, alter, or obscure any proprietary notices</li>
+        <li>Rent, lease, sell, redistribute, or sublicense the Application</li>
+        <li>Use the Application to develop a competing product or service</li>
+        <li>Use the Application for any unlawful purpose</li>
+      </ul>
+
+      <h2 class="doc-h2">3. Intellectual Property</h2>
+      <p class="doc-p">The Application and all copies are proprietary to Ascend Solutions LLC. All rights in patents, copyrights, trademarks, trade secrets, and other intellectual property rights in or associated with the Application are and will remain the property of Ascend Solutions LLC.</p>
+
+      <h2 class="doc-h2">4. Maintenance and Support</h2>
+      <p class="doc-p">Ascend Solutions LLC is solely responsible for providing maintenance and support for the Application. Apple Inc. and Google LLC have no obligation to furnish maintenance or support services with respect to the Application.</p>
+
+      <h2 class="doc-h2">5. Warranty Disclaimer</h2>
+      <p class="doc-caps">THE APPLICATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. ASCEND SOLUTIONS LLC DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.</p>
+
+      <h2 class="doc-h2">6. Limitation of Liability</h2>
+      <p class="doc-caps">TO THE EXTENT NOT PROHIBITED BY LAW, ASCEND SOLUTIONS LLC SHALL NOT BE LIABLE FOR PERSONAL INJURY OR ANY INCIDENTAL, SPECIAL, INDIRECT, OR CONSEQUENTIAL DAMAGES ARISING FROM YOUR USE OF THE APPLICATION.</p>
+
+      <h2 class="doc-h2">7. Third-Party Beneficiaries</h2>
+      <p class="doc-p">Apple Inc. and Google LLC and their subsidiaries are third-party beneficiaries of this EULA. Upon your acceptance, the App Store Providers have the right to enforce this EULA against you as third-party beneficiaries.</p>
+
+      <h2 class="doc-h2">8. Legal Compliance</h2>
+      <p class="doc-p">You represent and warrant that you are not located in a country subject to a U.S. Government embargo and are not listed on any U.S. Government list of prohibited or restricted parties.</p>
+
+      <h2 class="doc-h2">9. Governing Law</h2>
+      <p class="doc-p">This Agreement is governed by the laws of the State of Utah, United States. Any disputes arising under this Agreement shall be subject to the exclusive jurisdiction of the courts located in Utah.</p>
+
+      <h2 class="doc-h2">10. Contact</h2>
+      <div class="contact-block">
+        <p>Questions about this EULA? Contact us at:<br/><br/>
+        <strong style="color:white">Ascend Solutions LLC</strong><br/>
+        Email: <a href="mailto:legal@ascendsolutions.dev">legal@ascendsolutions.dev</a><br/>
+        Website: <a href="https://ascendsolutions.dev">ascendsolutions.dev</a></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="nav-logo">
+        <div class="logo-mark">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M10 2L17 16H3L10 2Z" fill="none" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 7L13.5 14H6.5L10 7Z" fill="white" opacity="0.4"/></svg>
+        </div>
+        <span class="logo-text">Ascend <span>Solutions</span></span>
+      </div>
+      <p class="footer-tagline">Technology built for families. Based in Utah. Built with purpose.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a href="index.html#about">About Us</a></li>
+        <li><a href="index.html#values">Our Values</a></li>
+        <li><a href="apps.html">Our Apps</a></li>
+        <li><a href="mailto:hello@ascendsolutions.dev">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Apps</div>
+      <ul class="footer-links">
+        <li><a href="apps.html">Family Hub</a></li>
+        <li><a href="apps.html">Grow Together</a></li>
+        <li><a href="apps.html">Coming Soon</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Legal</div>
+      <ul class="footer-links">
+        <li><a href="#privacy">Privacy Policy</a></li>
+        <li><a href="#tos">Terms of Service</a></li>
+        <li><a href="#eula">EULA</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Ascend Solutions LLC. All rights reserved.</div>
+    <div class="footer-legal">
+      <a href="#privacy">Privacy</a>
+      <a href="#tos">Terms</a>
+      <a href="#">Utah, USA</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); });
+
+  // Active sidebar link on scroll
+  const sections = document.querySelectorAll('.doc-section');
+  const sideLinks = document.querySelectorAll('.sidebar-nav a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 140) current = s.id; });
+    sideLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+</script>
+</body>
+</html>
