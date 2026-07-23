@@ -26,3 +26,30 @@ body {
   color: var(--foreground);
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
 }
+
+.app-teaser[role="link"],
+.app-card[role="button"] {
+  cursor: pointer;
+}
+
+.app-teaser[role="link"]:focus-visible,
+.app-card[role="button"]:focus-visible,
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid #e8734a !important;
+  outline-offset: 4px !important;
+}
+
+.waitlist-status {
+  flex-basis: 100%;
+  min-height: 1.3em;
+  margin: 2px 8px 0;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 12px;
+}
+
+.waitlist-status[data-state="error"] {
+  color: #fff0ea;
+  font-weight: 600;
+}
