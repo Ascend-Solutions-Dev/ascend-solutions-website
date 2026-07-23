@@ -250,8 +250,8 @@
             <span><span class="contact-option-label">Billing questions</span><span class="contact-option-email">billing@ascendsolutions.dev</span></span>
             <span class="contact-option-action">Copy</span>
           </button>
-          <button class="contact-option" type="button" data-email="info@ascendsolutions.dev">
-            <span><span class="contact-option-label">Legal & privacy inquiries</span><span class="contact-option-email">info@ascendsolutions.dev</span></span>
+          <button class="contact-option" type="button" data-email="legal@ascendsolutions.dev">
+            <span><span class="contact-option-label">Legal & privacy inquiries</span><span class="contact-option-email">legal@ascendsolutions.dev</span></span>
             <span class="contact-option-action">Copy</span>
           </button>
         </div>
@@ -431,7 +431,7 @@
       const item = document.createElement("li");
       const link = document.createElement("a");
       link.textContent = "Legal inquiries";
-      link.href = "mailto:info@ascendsolutions.dev?subject=Legal%20inquiry";
+      link.href = "mailto:legal@ascendsolutions.dev?subject=Legal%20inquiry";
       item.append(link);
       list.append(item);
     });
