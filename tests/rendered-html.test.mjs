@@ -29,6 +29,8 @@ test("renders the apps and legal routes", async () => {
   assert.match(appsHtml, /Tools built for real family life/);
   assert.match(appsHtml, /Kinlii/);
   assert.match(appsHtml, /pantrii-dark-icon\.svg/);
+  assert.match(appsHtml, /featured-coming/);
+  assert.doesNotMatch(appsHtml, /Featured app · Coming soon/);
   assert.match(await legal.text(), /Privacy Policy/);
 });
 
