@@ -99,10 +99,14 @@ test("ships the supplied brand assets", async () => {
   assert.match(css, /Plus Jakarta Sans/);
 });
 
-test("does not ship legacy static entry pages", async () => {
-  await Promise.all([
-    assert.rejects(access(new URL("../index.html", import.meta.url))),
-    assert.rejects(access(new URL("../apps.html", import.meta.url))),
-    assert.rejects(access(new URL("../legal.html", import.meta.url))),
-  ]);
+test("keeps GitHub Pages routes connected to the branded application", async () => {
+  const bridgeFiles = ["index.html", "apps.html", "legal.html", "404.html"];
+  const contents = await Promise.all(
+    bridgeFiles.map((file) => readFile(new URL(`../${file}`, import.meta.url), "utf8")),
+  );
+
+  for (const html of contents) {
+    assert.match(html, /https:\/\/ascend-solutions\.skyler-crestani-sc\.chatgpt\.site/);
+    assert.doesNotMatch(html, /vinext-starter/i);
+  }
 });
