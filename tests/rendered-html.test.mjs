@@ -24,7 +24,10 @@ test("renders the apps and legal routes", async () => {
   const [apps, legal] = await Promise.all([render("/apps"), render("/legal")]);
   assert.equal(apps.status, 200);
   assert.equal(legal.status, 200);
-  assert.match(await apps.text(), /Tools built for real family life/);
+  const appsHtml = await apps.text();
+  assert.match(appsHtml, /Tools built for real family life/);
+  assert.match(appsHtml, /Kinlii/);
+  assert.match(appsHtml, /pantrii-dark-icon\.svg/);
   assert.match(await legal.text(), /Privacy Policy/);
 });
 
@@ -33,6 +36,8 @@ test("ships the supplied brand assets", async () => {
     access(new URL("../public/brand/ascend-icon.png", import.meta.url)),
     access(new URL("../public/brand/ascend-long-light.png", import.meta.url)),
     access(new URL("../public/brand/ascend-long-dark.png", import.meta.url)),
+    access(new URL("../public/brand/pantrii-dark-icon.svg", import.meta.url)),
+    access(new URL("../public/brand/pantrii-light-icon.svg", import.meta.url)),
     access(new URL("../public/og.png", import.meta.url)),
   ]);
   const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
