@@ -17,6 +17,7 @@ test("renders the branded Ascend homepage", async () => {
   assert.match(html, /Practical apps for busy/);
   assert.match(html, /Family-first design/);
   assert.match(html, /\/brand\/ascend-long-light\.png/);
+  assert.match(html, /\/brand\/pantrii-light-icon\.svg/);
   assert.match(html, /\/og\.png/);
 });
 
