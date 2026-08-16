@@ -21,7 +21,8 @@ test("renders the branded Ascend homepage", async () => {
   assert.match(html, /\/og\.png/);
   assert.match(html, /Skip to main content/);
   assert.match(html, /Open navigation menu/);
-  assert.match(html, /mailto:sales@ascendsolutions\.dev/);
+  assert.match(html, /mailto:info@ascendsolutions\.dev/);
+  assert.doesNotMatch(html, /sales@ascendsolutions\.dev/);
   assert.doesNotMatch(html, /hello@ascendsolutions\.dev/);
   assert.match(html, /rel="canonical" href="https:\/\/ascendsolutions\.dev\/?"/);
 });
