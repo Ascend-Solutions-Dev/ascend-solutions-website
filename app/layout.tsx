@@ -2,12 +2,30 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Ascend Solutions",
+  metadataBase: new URL("https://ascendsolutions.dev"),
+  title: {
+    default: "Ascend Solutions | Technology Built for Families",
+    template: "%s | Ascend Solutions",
+  },
   description:
     "Family-first technology from Ascend Solutions, including practical apps like Pantrii.",
+  openGraph: {
+    title: "Ascend Solutions",
+    description: "Practical apps for busy family life.",
+    url: "https://ascendsolutions.dev",
+    siteName: "Ascend Solutions",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Ascend Solutions — Practical apps for busy family life." }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ascend Solutions",
+    description: "Practical apps for busy family life.",
+    images: ["/og.png"],
+  },
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
+    icon: "/brand/ascend-icon-background.png",
+    shortcut: "/brand/ascend-icon-background.png",
   },
 };
 
