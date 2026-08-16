@@ -54,6 +54,18 @@ test("validates waitlist submissions before accessing storage", async () => {
   assert.deepEqual(await response.json(), { error: "Enter a valid email address." });
 });
 
+test("protects the waitlist admin page and export", async () => {
+  const apiResponse = await render("/api/admin/waitlist", {
+    headers: { accept: "application/json" },
+  });
+  assert.equal(apiResponse.status, 401);
+  assert.deepEqual(await apiResponse.json(), { error: "Sign in required." });
+
+  const pageResponse = await render("/admin/waitlist");
+  assert.ok([302, 303, 307, 308].includes(pageResponse.status));
+  assert.match(pageResponse.headers.get("location") ?? "", /^\/signin-with-chatgpt\?return_to=/);
+});
+
 test("ships the supplied brand assets", async () => {
   await Promise.all([
     access(new URL("../public/brand/ascend-icon.png", import.meta.url)),

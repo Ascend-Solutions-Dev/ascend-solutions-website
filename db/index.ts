@@ -15,3 +15,12 @@ export async function getD1() {
 
   return env.DB;
 }
+
+export async function ensureWaitlistSchema() {
+  const db = await getD1();
+  await db.batch([
+    db.prepare("CREATE TABLE IF NOT EXISTS waitlist_signups (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, email TEXT NOT NULL, source TEXT DEFAULT 'pantrii' NOT NULL, created_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL)"),
+    db.prepare("CREATE UNIQUE INDEX IF NOT EXISTS idx_waitlist_signups_email ON waitlist_signups (email)"),
+  ]);
+  return db;
+}
