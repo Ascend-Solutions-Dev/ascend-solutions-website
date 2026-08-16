@@ -4,12 +4,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Ascend Solutions</title>
+    <style>html,body,iframe{width:100%;height:100%;margin:0;border:0}body{overflow:hidden}</style>
     <script>
       const destination = new URL(window.location.pathname + window.location.search + window.location.hash, "https://ascend-solutions.skyler-crestani-sc.chatgpt.site");
-      window.location.replace(destination.toString());
+      window.addEventListener("DOMContentLoaded", () => {
+        document.querySelector("iframe").src = destination.toString();
+      });
     </script>
   </head>
   <body>
-    <p><a href="https://ascend-solutions.skyler-crestani-sc.chatgpt.site/">Continue to Ascend Solutions</a></p>
+    <iframe src="https://ascend-solutions.skyler-crestani-sc.chatgpt.site/" title="Ascend Solutions"></iframe>
+    <noscript><p><a href="https://ascend-solutions.skyler-crestani-sc.chatgpt.site/">Continue to Ascend Solutions</a></p></noscript>
   </body>
 </html>

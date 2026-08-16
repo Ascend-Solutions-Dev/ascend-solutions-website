@@ -107,6 +107,8 @@ test("keeps GitHub Pages routes connected to the branded application", async () 
 
   for (const html of contents) {
     assert.match(html, /https:\/\/ascend-solutions\.skyler-crestani-sc\.chatgpt\.site/);
+    assert.match(html, /<iframe/i);
+    assert.doesNotMatch(html, /window\.location\.replace|http-equiv="refresh"/i);
     assert.doesNotMatch(html, /vinext-starter/i);
   }
 });
