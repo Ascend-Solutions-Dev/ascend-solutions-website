@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description: "Practical apps for busy family life.",
     url: "https://ascendsolutions.dev",
     siteName: "Ascend Solutions",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Ascend Solutions — Practical apps for busy family life." }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Ascend Solutions: Practical apps for busy family life." }],
     type: "website",
   },
   twitter: {
