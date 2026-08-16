@@ -8,6 +8,13 @@
       "when": 1786854654072,
       "tag": "0000_nostalgic_bishop",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1786857608877,
+      "tag": "0001_safe_phantom_reporter",
+      "breakpoints": true
     }
   ]
 }

@@ -62,8 +62,21 @@ test("protects the waitlist admin page and export", async () => {
   assert.deepEqual(await apiResponse.json(), { error: "Sign in required." });
 
   const pageResponse = await render("/admin/waitlist");
-  assert.ok([302, 303, 307, 308].includes(pageResponse.status));
-  assert.match(pageResponse.headers.get("location") ?? "", /^\/signin-with-chatgpt\?return_to=/);
+  assert.equal(pageResponse.status, 200);
+  const pageHtml = await pageResponse.text();
+  assert.match(pageHtml, /Waitlist access/);
+  assert.match(pageHtml, /Email me a sign-in link/);
+  assert.doesNotMatch(pageHtml, /Download CSV/);
+});
+
+test("keeps magic-link email disabled until its secrets are configured", async () => {
+  const response = await render("/api/admin/auth/request", {
+    method: "POST",
+    headers: { "content-type": "application/json", accept: "application/json", origin: "http://localhost" },
+    body: JSON.stringify({ email: "skyler@ascendsolutions.dev" }),
+  });
+  assert.equal(response.status, 503);
+  assert.deepEqual(await response.json(), { error: "Admin email sign-in is still being configured." });
 });
 
 test("ships the supplied brand assets", async () => {
