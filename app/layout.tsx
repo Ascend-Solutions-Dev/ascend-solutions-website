@@ -3,6 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ascendsolutions.dev"),
+  alternates: { canonical: "/" },
   title: {
     default: "Ascend Solutions | Technology Built for Families",
     template: "%s | Ascend Solutions",
@@ -36,7 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body><a className="skip-link" href="#main-content">Skip to main content</a>{children}</body>
     </html>
   );
 }

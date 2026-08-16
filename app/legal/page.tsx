@@ -1,8 +1,17 @@
+import type { Metadata } from "next";
 import { Footer, Header } from "../site-shell";
+
+export const metadata: Metadata = {
+  title: "Legal",
+  description: "Privacy Policy, Terms of Service, and End User License Agreement for Ascend Solutions products.",
+  alternates: { canonical: "/legal" },
+  openGraph: { title: "Legal | Ascend Solutions", description: "Policies and agreements for Ascend Solutions products.", url: "/legal", images: ["/og.png"] },
+  twitter: { title: "Legal | Ascend Solutions", description: "Policies and agreements for Ascend Solutions products.", images: ["/og.png"] },
+};
 
 function Contact({ label = "Questions?" }: { label?: string }) { return <div className="legal-contact"><p>{label}<br/><br/><strong>Ascend Solutions LLC</strong><br/>Email: <a href="mailto:legal@ascendsolutions.dev">legal@ascendsolutions.dev</a><br/>Website: <a href="https://ascendsolutions.dev">ascendsolutions.dev</a><br/>Utah, USA</p></div>; }
 
-export default function LegalPage(){return <><Header/><main>
+export default function LegalPage(){return <><Header/><main id="main-content">
   <section className="page-hero"><div className="page-hero-shell"><span className="eyebrow">Legal</span><h1 className="page-title">Policies and agreements.</h1><p className="page-lead">Read the terms and privacy policies for Ascend Solutions products.</p></div></section>
   <div className="legal-layout"><aside className="legal-nav"><p>Legal documents</p><a href="#privacy">Privacy Policy</a><a href="#tos">Terms of Service</a><a href="#eula">EULA</a></aside><div>
     <section className="legal-doc" id="privacy"><span className="eyebrow">Legal</span><h2 className="legal-title">Privacy Policy</h2><p className="legal-meta">Effective Date: July 14, 2026 · Last Updated: July 14, 2026</p><div className="legal-intro"><strong>Our commitment:</strong> Ascend Solutions LLC builds for families. We take the privacy of your family, especially your children, seriously. We never sell your data, we minimize what we collect, and we exceed COPPA requirements for any features involving children under 13.</div>

@@ -1,8 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 
 export function Header() {
-  return <header className="site-header"><nav className="nav-shell" aria-label="Primary navigation"><Link className="brand-logo" href="/" aria-label="Ascend Solutions home"><Image src="/brand/ascend-long-light.png" alt="Ascend Solutions" width={2061} height={595} priority /></Link><ul className="nav-links"><li><Link href="/apps">Our Apps</Link></li><li><Link href="/#about">Our Story</Link></li><li><Link href="/legal">Legal</Link></li><li><a className="button button-orange" href="mailto:hello@ascendsolutions.dev">Get in touch</a></li></ul></nav></header>;
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  return <header className="site-header"><nav className="nav-shell" aria-label="Primary navigation"><Link className="brand-logo" href="/" aria-label="Ascend Solutions home"><Image src="/brand/ascend-long-light.png" alt="Ascend Solutions" width={2061} height={595} priority /></Link><button className="menu-toggle" type="button" aria-expanded={menuOpen} aria-controls="primary-menu" aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"} onClick={() => setMenuOpen((open) => !open)}><span /><span /><span /></button><ul className={`nav-links${menuOpen ? " is-open" : ""}`} id="primary-menu" onClick={() => setMenuOpen(false)}><li><Link href="/apps">Our Apps</Link></li><li><Link href="/#about">Our Story</Link></li><li><Link href="/legal">Legal</Link></li><li><a className="button button-orange" href="mailto:hello@ascendsolutions.dev">Get in touch</a></li></ul></nav></header>;
 }
 
 export function Footer() {
