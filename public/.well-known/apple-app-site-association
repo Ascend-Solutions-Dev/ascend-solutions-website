@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["9UY69ZP47R.com.ascendsolutions.pantrii"],
+        "components": [
+          { "/": "/join", "?": { "token": "?*" }, "comment": "household invite" },
+          { "/": "/reset-password", "?": { "code": "?*" }, "comment": "password reset" }
+        ]
+      }
+    ]
+  }
+}
