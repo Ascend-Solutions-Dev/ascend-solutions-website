@@ -23,8 +23,7 @@ export default function LegalPage(){return <><Header/><main id="main-content">
       <h2>4. How We Use Your Information</h2><ul><li>Provide, operate, and maintain our Services</li><li>Improve, personalize, and expand our Services</li><li>Process transactions and send related information</li><li>Send administrative information, updates, and security alerts</li><li>Detect, prevent, and address technical issues and fraud</li><li>Comply with legal obligations</li></ul>
       <h2>5. How We Share Your Information</h2><p>We do not sell, trade, or rent your personal information to third parties. We may share your information only with trusted service providers who assist in operating our Services, when required by law, or in the event of a business transfer (with notice provided to you).</p>
       <h2>6. Your Rights</h2><ul><li><strong>Access &amp; Correction:</strong> Update your information through account settings or by contacting us</li><li><strong>Deletion:</strong> Request deletion of your data at any time</li><li><strong>California (CCPA):</strong> Right to know, delete, and opt out of sale of personal information</li><li><strong>EU/UK (GDPR):</strong> Right to access, rectify, erase, and port your data</li></ul>
-      <h2>7. Contact Us</h2><Contact label="Questions about this Privacy Policy? Contact us at:"/>
-      <h2>Pantrii: AI Features and Service Providers</h2>
+      <h2>7. Pantrii: AI Features and Service Providers</h2>
       <p>This section applies to the Pantrii mobile app and adds to the Privacy Policy above.</p>
       <h3>AI features and OpenAI</h3>
       <p>Some Pantrii features use artificial intelligence provided by OpenAI:</p>
@@ -38,6 +37,7 @@ export default function LegalPage(){return <><Header/><main id="main-content">
       <p>We do not sell your data or use it for advertising. Pantrii does not track you across other companies&apos; apps or websites.</p>
       <h3>Deleting your data</h3>
       <p>You can delete your account and its data in the app under <strong>Settings → Delete account</strong>. You can also request deletion by emailing <a href="mailto:info@ascendsolutions.dev">info@ascendsolutions.dev</a>.</p>
+      <h2>8. Contact Us</h2><Contact label="Questions about this Privacy Policy? Contact us at:"/>
     </section>
     <section className="legal-doc" id="tos"><span className="eyebrow">Legal</span><h2 className="legal-title">Terms of Service</h2><p className="legal-meta">Effective Date: July 14, 2026 · Last Updated: July 14, 2026</p><div className="legal-intro">By downloading, installing, or using our Services, you confirm that you have read, understood, and agree to be bound by these Terms of Service. If you do not agree, do not use our Services.</div>
       <h2>1. Acceptance of Terms</h2><p>These Terms of Service (&quot;Terms&quot;) constitute a legally binding agreement between you and Ascend Solutions LLC governing your access to and use of our mobile applications, websites, and related services (collectively, the &quot;Services&quot;).</p>
