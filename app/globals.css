@@ -1,5 +1,22 @@
-@import url("https://fonts.googleapis.com/css2?family=Bree+Serif&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
+
+/* Local Latin fonts; Jakarta shares one variable file across all used weights. */
+@font-face {
+  font-family: "Bree Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/font-assets/bree-serif-latin-v18-ca092b4130ee.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/font-assets/plus-jakarta-sans-latin-variable-v12-153fc85b7029.woff2") format("woff2");
+}
+
 
 :root { --orange:#ff8a00; --orange-deep:#e97800; --navy:#022b46; --navy-soft:#0b4163; --sky:#c7e9ff; --sky-soft:#edf8ff; --paper:#fffdf9; --white:#fff; --ink:#101418; --muted:#596773; --line:rgba(2,43,70,.12); --heading:"Bree Serif",Georgia,serif; --body:"Plus Jakarta Sans",Arial,sans-serif; }
 *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--paper);color:var(--navy);font-family:var(--body)} a{color:inherit} img{max-width:100%} button,input{font:inherit}

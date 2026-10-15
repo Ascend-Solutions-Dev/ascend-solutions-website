@@ -45,7 +45,7 @@ export function WaitlistForm() {
     <label htmlFor="waitlist-email">Email address</label>
     <div className="waitlist-fields"><input id="waitlist-email" name="email" type="email" autoComplete="email" inputMode="email" placeholder="you@example.com" required aria-describedby="waitlist-consent waitlist-status"/><button className="button button-navy" type="submit" disabled={state === "submitting"}>{state === "submitting" ? "Joining…" : "Join the waitlist"}</button></div>
     <input name="company" type="text" tabIndex={-1} autoComplete="off" hidden aria-hidden="true" />
-    <p className="waitlist-consent" id="waitlist-consent">We’ll only use your email for Pantrii updates. See our <Link href="/legal#privacy">Privacy Policy</Link>.</p>
+    <p className="waitlist-consent" id="waitlist-consent">We’ll only use your email for Pantrii updates. See our <Link prefetch={false} href="/legal#privacy">Privacy Policy</Link>.</p>
     <p className={`form-status ${state}`} id="waitlist-status" role="status" aria-live="polite">{message}</p>
   </form>;
 }

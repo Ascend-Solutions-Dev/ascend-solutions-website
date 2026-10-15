@@ -25,8 +25,8 @@ export const metadata: Metadata = {
     images: ["/og.png"],
   },
   icons: {
-    icon: "/brand/ascend-icon-background.png",
-    shortcut: "/brand/ascend-icon-background.png",
+    icon: "/brand-assets/ascend-icon-background-0c83e0a36b7a.png",
+    shortcut: "/brand-assets/ascend-icon-background-0c83e0a36b7a.png",
   },
 };
 

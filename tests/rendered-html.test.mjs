@@ -17,7 +17,7 @@ test("renders the branded Ascend homepage", async () => {
   assert.match(html, /Practical apps for busy/);
   assert.match(html, /Family-first design/);
   assert.match(html, /ascend-long-light\.png/);
-  assert.match(html, /\/brand\/pantrii-light-icon\.svg/);
+  assert.match(html, /data:image\/svg\+xml;base64,/);
   assert.match(html, /\/og\.png/);
   assert.match(html, /Skip to main content/);
   assert.match(html, /Open navigation menu/);
@@ -34,7 +34,7 @@ test("renders the apps and legal routes", async () => {
   const appsHtml = await apps.text();
   assert.match(appsHtml, /Tools built for real family life/);
   assert.match(appsHtml, /Kinlii/);
-  assert.match(appsHtml, /pantrii-dark-icon\.svg/);
+  assert.match(appsHtml, /data:image\/svg\+xml;base64,/);
   assert.match(appsHtml, /featured-coming/);
   assert.doesNotMatch(appsHtml, /Featured app · Coming soon/);
   assert.match(appsHtml, /<form[^>]+waitlist-form/);
@@ -110,5 +110,112 @@ test("keeps GitHub Pages routes connected to the branded application", async () 
     assert.match(html, /<iframe/i);
     assert.doesNotMatch(html, /window\.location\.replace|http-equiv="refresh"/i);
     assert.doesNotMatch(html, /vinext-starter/i);
+  }
+});
+
+test("serves both local fonts with immutable caching for GET and HEAD", async () => {
+  for (const name of ["bree-serif-latin-v18-ca092b4130ee.woff2", "plus-jakarta-sans-latin-variable-v12-153fc85b7029.woff2"]) {
+    const bytes = await readFile(new URL(`../public/fonts/${name}`, import.meta.url));
+    for (const method of ["GET", "HEAD"]) {
+      let assetPath;
+      const response = await render(`/font-assets/${name}`, { method }, {
+        ASSETS: { fetch: async (request) => {
+          assetPath = new URL(request.url).pathname;
+          return new Response(method === "HEAD" ? null : bytes, { headers: { "cache-control": "public, max-age=0, must-revalidate" } });
+        } },
+      });
+      assert.equal(assetPath, `/fonts/${name}`);
+      assert.equal(response.status, 200);
+      assert.equal(response.headers.get("content-type"), "font/woff2");
+      assert.equal(response.headers.get("cache-control"), "public, max-age=31536000, immutable");
+      assert.deepEqual(Buffer.from(await response.arrayBuffer()), method === "HEAD" ? Buffer.alloc(0) : bytes);
+    }
+  }
+});
+
+
+test("embeds original Pantrii artwork without separate icon requests", async () => {
+  for (const route of ["/", "/apps"]) {
+    const html = await (await render(route)).text();
+    const kinds = route === "/" ? ["light"] : ["light", "dark"];
+    for (const kind of kinds) {
+      const original = await readFile(new URL(`../public/brand/pantrii-${kind}-icon.svg`, import.meta.url));
+      assert.ok(html.includes(`src="data:image/svg+xml;base64,${original.toString("base64")}"`));
+    }
+    assert.doesNotMatch(html, /src="\/brand\/pantrii-(light|dark)-icon\.svg/);
+  }
+});
+
+test("serves the fingerprinted favicon with browser caching", async () => {
+  const bytes = await readFile(new URL("../public/brand/ascend-icon-background.png", import.meta.url));
+  let assetPath;
+  const response = await render("/brand-assets/ascend-icon-background-0c83e0a36b7a.png", {}, {
+    ASSETS: { fetch: async (request) => {
+      assetPath = new URL(request.url).pathname;
+      return new Response(bytes);
+    } },
+  });
+  assert.equal(assetPath, "/brand/ascend-icon-background.png");
+  assert.equal(response.headers.get("content-type"), "image/png");
+  assert.equal(response.headers.get("cache-control"), "public, max-age=31536000, immutable");
+  assert.deepEqual(Buffer.from(await response.arrayBuffer()), bytes);
+});
+
+test("public pages need no external framework scripts or stylesheets", async () => {
+  for (const path of ["/", "/apps", "/legal"]) {
+    const response = await render(path);
+    const html = await response.text();
+    assert.equal(response.headers.get("cache-control"), "public, max-age=300, s-maxage=3600");
+    assert.doesNotMatch(html, /<script\b[^>]*\bsrc=|rel="(?:stylesheet|modulepreload)"|\/_next\//i);
+    assert.match(html, /<style data-ascend-public-styles>/);
+    assert.match(html, /<script data-ascend-public-interactions>/);
+    const head = await render(path, { method: "HEAD" });
+    assert.equal(head.status, 200);
+    assert.equal(await head.text(), "");
+  }
+});
+
+test("static public pages retain the original main content and compiled styles", async () => {
+  for (const path of ["/", "/apps", "/legal"]) {
+    const baselines = JSON.parse(await readFile(new URL("./.public-render-baselines.json", import.meta.url), "utf8"));
+    const original = baselines[path];
+    const optimized = await (await render(path)).text();
+    const content = (html) => html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1].replace(/<img\b[^>]*>/g, "");
+    assert.equal(content(optimized), content(original));
+    const cssUrl = original.match(/<link\b(?=[^>]*rel="stylesheet")[^>]*href="([^"]+)"/)[1];
+    const css = await readFile(new URL(`../dist/client${cssUrl}`, import.meta.url), "utf8");
+    assert.ok(optimized.includes('<style data-ascend-public-styles>' + css + '</style>'));
+  }
+});
+
+test("private admin pages retain their authenticated runtime", async () => {
+  const response = await render("/admin/waitlist");
+  assert.notEqual(response.headers.get("cache-control"), "public, max-age=300, s-maxage=3600");
+  assert.match(await response.text(), /Email me a sign-in link/);
+});
+
+test("handles crawler guidance and irrelevant scanner paths without rendering", async () => {
+  let assetCalls = 0;
+  const env = { ASSETS: { fetch: async () => { assetCalls++; throw new Error("Unexpected asset request"); } } };
+  const robots = await render("/robots.txt", {}, env);
+  assert.equal(robots.status, 200);
+  assert.equal(robots.headers.get("cache-control"), "public, max-age=86400");
+  const text = await robots.text();
+  assert.match(text, /Allow: \/\n/);
+  assert.match(text, /Disallow: \/admin\//);
+  for (const path of ["/xmlrpc.php", "/wp-login.php", "/wp-admin/install.php"]) {
+    const response = await render(path, {}, env);
+    assert.equal(response.status, 404);
+    assert.equal(await response.text(), "Not found");
+  }
+  assert.equal(assetCalls, 0);
+});
+
+
+test("public HTML is bundled and needs no runtime asset lookup", async () => {
+  for (const path of ["/", "/apps", "/legal"]) {
+    const response = await render(path, {}, { ASSETS: { fetch: async () => { throw new Error("Public HTML must not fetch another asset"); } } });
+    assert.equal(response.status, 200);
+    assert.match(await response.text(), /data-ascend-public-styles/);
   }
 });
