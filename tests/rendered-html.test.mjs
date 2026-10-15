@@ -112,3 +112,23 @@ test("keeps GitHub Pages routes connected to the branded application", async () 
     assert.doesNotMatch(html, /vinext-starter/i);
   }
 });
+
+test("serves both local fonts with immutable caching for GET and HEAD", async () => {
+  for (const name of ["bree-serif-latin-v18-ca092b4130ee.woff2", "plus-jakarta-sans-latin-variable-v12-153fc85b7029.woff2"]) {
+    const bytes = await readFile(new URL(`../public/fonts/${name}`, import.meta.url));
+    for (const method of ["GET", "HEAD"]) {
+      let assetPath;
+      const response = await render(`/font-assets/${name}`, { method }, {
+        ASSETS: { fetch: async (request) => {
+          assetPath = new URL(request.url).pathname;
+          return new Response(method === "HEAD" ? null : bytes, { headers: { "cache-control": "public, max-age=0, must-revalidate" } });
+        } },
+      });
+      assert.equal(assetPath, `/fonts/${name}`);
+      assert.equal(response.status, 200);
+      assert.equal(response.headers.get("content-type"), "font/woff2");
+      assert.equal(response.headers.get("cache-control"), "public, max-age=31536000, immutable");
+      assert.deepEqual(Buffer.from(await response.arrayBuffer()), method === "HEAD" ? Buffer.alloc(0) : bytes);
+    }
+  }
+});

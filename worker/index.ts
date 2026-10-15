@@ -32,6 +32,24 @@ const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
+    // Serve fingerprinted fonts through the Worker: Sites may override headers
+    // on directly served static assets. Browsers can reuse these immutable URLs.
+    const fontAssets: Record<string, string> = {
+      "/font-assets/bree-serif-latin-v18-ca092b4130ee.woff2": "/fonts/bree-serif-latin-v18-ca092b4130ee.woff2",
+      "/font-assets/plus-jakarta-sans-latin-variable-v12-153fc85b7029.woff2": "/fonts/plus-jakarta-sans-latin-variable-v12-153fc85b7029.woff2",
+    };
+    const fontAsset = Object.hasOwn(fontAssets, url.pathname) ? fontAssets[url.pathname] : undefined;
+    if (fontAsset && (request.method === "GET" || request.method === "HEAD")) {
+      const asset = await env.ASSETS.fetch(new Request(new URL(fontAsset, request.url), { method: request.method }));
+      if (asset.ok) {
+        const headers = new Headers(asset.headers);
+        headers.set("content-type", "font/woff2");
+        headers.set("cache-control", "public, max-age=31536000, immutable");
+        return new Response(request.method === "HEAD" ? null : asset.body, { status: asset.status, headers });
+      }
+      return asset;
+    }
+
     if (url.pathname === "/_vinext/image") {
       const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];
       return handleImageOptimization(request, {
