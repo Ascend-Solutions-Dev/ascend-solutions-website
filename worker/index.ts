@@ -32,6 +32,44 @@ const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
+    const isRead = request.method === "GET" || request.method === "HEAD";
+    const publicPages: Record<string, string> = { "/": "home", "/apps": "apps", "/legal": "legal", "/apps/": "apps", "/legal/": "legal" };
+    const publicPage = Object.hasOwn(publicPages, url.pathname) ? publicPages[url.pathname] : undefined;
+    if (isRead && publicPage) {
+      const asset = await env.ASSETS.fetch(new Request(new URL(`/_public-pages/${publicPage}.content`, request.url)));
+      if (asset.ok) {
+        return new Response(request.method === "HEAD" ? null : asset.body, {
+          headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=300, s-maxage=3600" },
+        });
+      }
+      // Development/build rendering and older deployments remain functional.
+    }
+
+    const publicAssets: Record<string, string> = {
+      "/public-assets/99e6fa992cb1/brand/ascend-long-light.png": "/brand/ascend-long-light.png",
+      "/public-assets/0904a8d82e10/brand/ascend-long-dark.png": "/brand/ascend-long-dark.png",
+      "/public-assets/887039d008b0/brand/ascend-icon.png": "/brand/ascend-icon.png"
+};
+    const publicAsset = Object.hasOwn(publicAssets, url.pathname) ? publicAssets[url.pathname] : undefined;
+    if (isRead && publicAsset) {
+      const asset = await env.ASSETS.fetch(new Request(new URL(publicAsset, request.url), { method: request.method }));
+      if (!asset.ok) return asset;
+      const headers = new Headers(asset.headers);
+      headers.set("content-type", "image/png");
+      headers.set("cache-control", "public, max-age=31536000, immutable");
+      return new Response(request.method === "HEAD" ? null : asset.body, { status: asset.status, headers });
+    }
+
+    if (isRead && url.pathname === "/robots.txt") {
+      return new Response(request.method === "HEAD" ? null : "User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /api/\n", {
+        headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "public, max-age=86400" },
+      });
+    }
+    // These are not Ascend routes. Avoid invoking the framework for scanners.
+    if (/^\/(?:xmlrpc\.php|wp-login\.php|wp-admin(?:\/|$)|wp-includes(?:\/|$)|wp-content(?:\/|$))/.test(url.pathname)) {
+      return new Response(request.method === "HEAD" ? null : "Not found", { status: 404, headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "public, max-age=3600" } });
+    }
+
     // Serve fingerprinted fonts through the Worker: Sites may override headers
     // on directly served static assets. Browsers can reuse these immutable URLs.
     const fontAssets: Record<string, string> = {

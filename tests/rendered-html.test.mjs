@@ -6,7 +6,13 @@ async function render(pathname = "/", init, env = {}) {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-${pathname}`);
   const { default: worker } = await import(workerUrl.href);
-  return worker.fetch(new Request(`http://localhost${pathname}`, { headers: { accept: "text/html", ...init?.headers }, ...init }), { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) }, ...env }, { waitUntil() {}, passThroughOnException() {} });
+  return worker.fetch(new Request(`http://localhost${pathname}`, { headers: { accept: "text/html", ...init?.headers }, ...init }), { ASSETS: { fetch: async (request) => {
+    const path = new URL(request.url).pathname;
+    if (/^\/_public-pages\/(home|apps|legal)\.content$/.test(path)) {
+      return new Response(await readFile(new URL(`../dist/client${path}`, import.meta.url)));
+    }
+    return new Response("Not found", { status: 404 });
+  } }, ...env }, { waitUntil() {}, passThroughOnException() {} });
 }
 
 test("renders the branded Ascend homepage", async () => {
@@ -159,4 +165,53 @@ test("serves the fingerprinted favicon with browser caching", async () => {
   assert.equal(response.headers.get("content-type"), "image/png");
   assert.equal(response.headers.get("cache-control"), "public, max-age=31536000, immutable");
   assert.deepEqual(Buffer.from(await response.arrayBuffer()), bytes);
+});
+
+test("public pages need no external framework scripts or stylesheets", async () => {
+  for (const path of ["/", "/apps", "/legal"]) {
+    const response = await render(path);
+    const html = await response.text();
+    assert.equal(response.headers.get("cache-control"), "public, max-age=300, s-maxage=3600");
+    assert.doesNotMatch(html, /<script\b[^>]*\bsrc=|rel="(?:stylesheet|modulepreload)"|\/_next\//i);
+    assert.match(html, /<style data-ascend-public-styles>/);
+    assert.match(html, /<script data-ascend-public-interactions>/);
+    const head = await render(path, { method: "HEAD" });
+    assert.equal(head.status, 200);
+    assert.equal(await head.text(), "");
+  }
+});
+
+test("static public pages retain the original main content and compiled styles", async () => {
+  for (const path of ["/", "/apps", "/legal"]) {
+    const original = await (await render(path, {}, { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } })).text();
+    const optimized = await (await render(path)).text();
+    const content = (html) => html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1].replace(/<img\b[^>]*>/g, "");
+    assert.equal(content(optimized), content(original));
+    const cssUrl = original.match(/<link\b(?=[^>]*rel="stylesheet")[^>]*href="([^"]+)"/)[1];
+    const css = await readFile(new URL(`../dist/client${cssUrl}`, import.meta.url), "utf8");
+    assert.ok(optimized.includes('<style data-ascend-public-styles>' + css + '</style>'));
+  }
+});
+
+test("private admin pages retain their authenticated runtime", async () => {
+  const response = await render("/admin/waitlist");
+  assert.notEqual(response.headers.get("cache-control"), "public, max-age=300, s-maxage=3600");
+  assert.match(await response.text(), /Email me a sign-in link/);
+});
+
+test("handles crawler guidance and irrelevant scanner paths without rendering", async () => {
+  let assetCalls = 0;
+  const env = { ASSETS: { fetch: async () => { assetCalls++; throw new Error("Unexpected asset request"); } } };
+  const robots = await render("/robots.txt", {}, env);
+  assert.equal(robots.status, 200);
+  assert.equal(robots.headers.get("cache-control"), "public, max-age=86400");
+  const text = await robots.text();
+  assert.match(text, /Allow: \/\n/);
+  assert.match(text, /Disallow: \/admin\//);
+  for (const path of ["/xmlrpc.php", "/wp-login.php", "/wp-admin/install.php"]) {
+    const response = await render(path, {}, env);
+    assert.equal(response.status, 404);
+    assert.equal(await response.text(), "Not found");
+  }
+  assert.equal(assetCalls, 0);
 });
