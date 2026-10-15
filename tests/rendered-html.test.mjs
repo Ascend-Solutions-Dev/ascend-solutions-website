@@ -17,7 +17,7 @@ test("renders the branded Ascend homepage", async () => {
   assert.match(html, /Practical apps for busy/);
   assert.match(html, /Family-first design/);
   assert.match(html, /ascend-long-light\.png/);
-  assert.match(html, /\/brand\/pantrii-light-icon\.svg/);
+  assert.match(html, /data:image\/svg\+xml;base64,/);
   assert.match(html, /\/og\.png/);
   assert.match(html, /Skip to main content/);
   assert.match(html, /Open navigation menu/);
@@ -34,7 +34,7 @@ test("renders the apps and legal routes", async () => {
   const appsHtml = await apps.text();
   assert.match(appsHtml, /Tools built for real family life/);
   assert.match(appsHtml, /Kinlii/);
-  assert.match(appsHtml, /pantrii-dark-icon\.svg/);
+  assert.match(appsHtml, /data:image\/svg\+xml;base64,/);
   assert.match(appsHtml, /featured-coming/);
   assert.doesNotMatch(appsHtml, /Featured app · Coming soon/);
   assert.match(appsHtml, /<form[^>]+waitlist-form/);
@@ -131,4 +131,32 @@ test("serves both local fonts with immutable caching for GET and HEAD", async ()
       assert.deepEqual(Buffer.from(await response.arrayBuffer()), method === "HEAD" ? Buffer.alloc(0) : bytes);
     }
   }
+});
+
+
+test("embeds original Pantrii artwork without separate icon requests", async () => {
+  for (const route of ["/", "/apps"]) {
+    const html = await (await render(route)).text();
+    const kinds = route === "/" ? ["light"] : ["light", "dark"];
+    for (const kind of kinds) {
+      const original = await readFile(new URL(`../public/brand/pantrii-${kind}-icon.svg`, import.meta.url));
+      assert.ok(html.includes(`src="data:image/svg+xml;base64,${original.toString("base64")}"`));
+    }
+    assert.doesNotMatch(html, /src="\/brand\/pantrii-(light|dark)-icon\.svg/);
+  }
+});
+
+test("serves the fingerprinted favicon with browser caching", async () => {
+  const bytes = await readFile(new URL("../public/brand/ascend-icon-background.png", import.meta.url));
+  let assetPath;
+  const response = await render("/brand-assets/ascend-icon-background-0c83e0a36b7a.png", {}, {
+    ASSETS: { fetch: async (request) => {
+      assetPath = new URL(request.url).pathname;
+      return new Response(bytes);
+    } },
+  });
+  assert.equal(assetPath, "/brand/ascend-icon-background.png");
+  assert.equal(response.headers.get("content-type"), "image/png");
+  assert.equal(response.headers.get("cache-control"), "public, max-age=31536000, immutable");
+  assert.deepEqual(Buffer.from(await response.arrayBuffer()), bytes);
 });

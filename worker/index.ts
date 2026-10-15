@@ -50,6 +50,16 @@ const worker = {
       return asset;
     }
 
+    // Cache the versioned browser tab icon without static-asset revalidation.
+    if (url.pathname === "/brand-assets/ascend-icon-background-0c83e0a36b7a.png" && (request.method === "GET" || request.method === "HEAD")) {
+      const asset = await env.ASSETS.fetch(new Request(new URL("/brand/ascend-icon-background.png", request.url), { method: request.method }));
+      if (!asset.ok) return asset;
+      const headers = new Headers(asset.headers);
+      headers.set("content-type", "image/png");
+      headers.set("cache-control", "public, max-age=31536000, immutable");
+      return new Response(request.method === "HEAD" ? null : asset.body, { status: asset.status, headers });
+    }
+
     if (url.pathname === "/_vinext/image") {
       const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];
       return handleImageOptimization(request, {
