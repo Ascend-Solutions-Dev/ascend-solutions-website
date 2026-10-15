@@ -1,10 +1,10 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 import worker from '../dist/server/index.js';
 
-const directory = resolve('dist/client/_public-pages');
-await mkdir(directory, { recursive: true });
+const pages = {};
+const baselines = {};
 const interactions = await readFile('scripts/public-interactions.js', 'utf8');
 const publicRoutes = [['/', 'home'], ['/apps', 'apps'], ['/legal', 'legal']];
 const publicImages = new Map();
@@ -22,6 +22,7 @@ for (const [route, name] of publicRoutes) {
   }, { waitUntil() {}, passThroughOnException() {} });
   if (!response.ok) throw new Error('Could not render public page: ' + route);
   let html = await response.text();
+  baselines[route] = html;
   const before = (html.match(/<script\b[^>]*\bsrc=/g) || []).length;
   html = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
   const stylesheets = [...html.matchAll(/<link\b(?=[^>]*\brel="stylesheet")(?=[^>]*\bhref="([^"]+)")[^>]*\/?\s*>/gi)];
@@ -49,8 +50,9 @@ for (const [route, name] of publicRoutes) {
   const noScript = '<noscript><style>@media(max-width:850px){.menu-toggle{display:none}.nav-shell{height:auto;min-height:86px;flex-wrap:wrap;padding-top:16px;padding-bottom:16px}.nav-links{display:flex;position:static;flex-wrap:wrap;width:100%;border:0;box-shadow:none}}</style>' + (route === '/apps' ? '<p class="section-shell">Enable JavaScript to join the waitlist, or email <a href="mailto:info@ascendsolutions.dev">info@ascendsolutions.dev</a>.</p>' : '') + '</noscript>';
   html = html.replace('</body>', noScript + '<script data-ascend-public-interactions>' + script + '</script></body>');
   if (/<script\b[^>]*\bsrc=/i.test(html) || /rel="modulepreload"/i.test(html) || /\/_next\//.test(html)) throw new Error('Framework network dependency remains: ' + route);
-  await writeFile(resolve(directory, name + '.content'), html);
+  pages[name] = html;
   measurements.push({ route, externalScriptsBefore: before, externalScriptsAfter: 0, externalStylesheetsAfter: 0, inlineScriptBytes: Buffer.byteLength(script), htmlBytes: Buffer.byteLength(html) });
 }
-await writeFile(resolve(directory, 'measurements.json'), JSON.stringify(measurements, null, 2) + '\n');
+await writeFile('worker/generated-public-pages.ts', 'export const generatedPublicPages: Record<string, string> = ' + JSON.stringify(pages) + ';\n');
+await writeFile('tests/.public-render-baselines.json', JSON.stringify(baselines));
 console.log(JSON.stringify(measurements, null, 2));

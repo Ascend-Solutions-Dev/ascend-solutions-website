@@ -1,3 +1,4 @@
+import { generatedPublicPages } from "./generated-public-pages";
 /** Cloudflare Worker entry point for the vinext-starter template. */
 import { handleImageOptimization, DEFAULT_DEVICE_SIZES, DEFAULT_IMAGE_SIZES } from "vinext/server/image-optimization";
 import handler from "vinext/server/app-router-entry";
@@ -36,13 +37,13 @@ const worker = {
     const publicPages: Record<string, string> = { "/": "home", "/apps": "apps", "/legal": "legal", "/apps/": "apps", "/legal/": "legal" };
     const publicPage = Object.hasOwn(publicPages, url.pathname) ? publicPages[url.pathname] : undefined;
     if (isRead && publicPage) {
-      const asset = await env.ASSETS.fetch(new Request(new URL(`/_public-pages/${publicPage}.content`, request.url)));
-      if (asset.ok) {
-        return new Response(request.method === "HEAD" ? null : asset.body, {
+      const html = generatedPublicPages[publicPage];
+      if (html) {
+        return new Response(request.method === "HEAD" ? null : html, {
           headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=300, s-maxage=3600" },
         });
       }
-      // Development/build rendering and older deployments remain functional.
+      // The first build pass intentionally falls through to render fresh HTML.
     }
 
     const publicAssets: Record<string, string> = {

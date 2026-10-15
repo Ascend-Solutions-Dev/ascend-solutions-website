@@ -6,13 +6,7 @@ async function render(pathname = "/", init, env = {}) {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-${pathname}`);
   const { default: worker } = await import(workerUrl.href);
-  return worker.fetch(new Request(`http://localhost${pathname}`, { headers: { accept: "text/html", ...init?.headers }, ...init }), { ASSETS: { fetch: async (request) => {
-    const path = new URL(request.url).pathname;
-    if (/^\/_public-pages\/(home|apps|legal)\.content$/.test(path)) {
-      return new Response(await readFile(new URL(`../dist/client${path}`, import.meta.url)));
-    }
-    return new Response("Not found", { status: 404 });
-  } }, ...env }, { waitUntil() {}, passThroughOnException() {} });
+  return worker.fetch(new Request(`http://localhost${pathname}`, { headers: { accept: "text/html", ...init?.headers }, ...init }), { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) }, ...env }, { waitUntil() {}, passThroughOnException() {} });
 }
 
 test("renders the branded Ascend homepage", async () => {
@@ -183,7 +177,8 @@ test("public pages need no external framework scripts or stylesheets", async () 
 
 test("static public pages retain the original main content and compiled styles", async () => {
   for (const path of ["/", "/apps", "/legal"]) {
-    const original = await (await render(path, {}, { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } })).text();
+    const baselines = JSON.parse(await readFile(new URL("./.public-render-baselines.json", import.meta.url), "utf8"));
+    const original = baselines[path];
     const optimized = await (await render(path)).text();
     const content = (html) => html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1].replace(/<img\b[^>]*>/g, "");
     assert.equal(content(optimized), content(original));
@@ -214,4 +209,13 @@ test("handles crawler guidance and irrelevant scanner paths without rendering", 
     assert.equal(await response.text(), "Not found");
   }
   assert.equal(assetCalls, 0);
+});
+
+
+test("public HTML is bundled and needs no runtime asset lookup", async () => {
+  for (const path of ["/", "/apps", "/legal"]) {
+    const response = await render(path, {}, { ASSETS: { fetch: async () => { throw new Error("Public HTML must not fetch another asset"); } } });
+    assert.equal(response.status, 200);
+    assert.match(await response.text(), /data-ascend-public-styles/);
+  }
 });
